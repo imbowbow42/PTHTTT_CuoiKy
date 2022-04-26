@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm fixed-top">
+  <div class="navbar-brand" style="width: 80; height: 80">
+    <a href="/"
+      ><img
+        src="/static/image/logo/logo-2.png"
+        alt="Logo"
+        style="width: 120px; display: flex; margin-top: -30px"
+    /></a>
+  </div>
+
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarResponsive"
+    aria-controls="navbarResponsive"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+      <!-- Search form -->
+      <form class="input-group w-auto my-auto d-none d-sm-flex">
+        <input
+          autocomplete="off"
+          type="search"
+          class="form-control rounded"
+          placeholder="Search"
+          style="min-width: 125px;"
+        />
+        <span class="input-group-text border-0 d-none d-lg-flex"
+          ><i class="fas fa-search"></i
+        ></span>
+      </form>
+    <ul class="navbar-nav ml-auto">
+      {% if session.logged_in %}
+      <li class="nav-item">
+        <a href="/" class="nav-link"><span class=""></span> Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="/profile?user={{session.uid}}" class="nav-link"><span class=""></span>Mohsin</a>
+      </li>
+      <li class="nav-item">
+        <a href="/out" class="nav-link"><span class=""></span> Logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a href="/" class="nav-link"><span class=""></span> Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="/register" class="nav-link"><span class=""></span> Signup</a>
+      </li>
+      <li class="nav-item">
+        <a href="/login" class="nav-link"><span class=""></span> Login</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>

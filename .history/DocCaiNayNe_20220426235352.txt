@@ -1,0 +1,6 @@
+Chạy lệnh:
+source venv/Scripts/activate
+python install -r requirements.txt
+cd OnlineShop
+
+

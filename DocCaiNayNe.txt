@@ -1,0 +1,8 @@
+Chạy lệnh:
+source venv/Scripts/activate
+python install -r requirements.txt
+cd OnlineShop
+python app.py
+
+Hoặc có thể xem cách chạy ở:
+https://www.youtube.com/watch?v=zeAJIst_AWc&t=646s

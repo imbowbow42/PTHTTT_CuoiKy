@@ -1,0 +1,3 @@
+Chạy lệnh:
+source venv/Scripts/activate
+
