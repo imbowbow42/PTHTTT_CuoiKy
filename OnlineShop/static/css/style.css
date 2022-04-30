@@ -31,7 +31,7 @@ section .section-title {
   text-transform: uppercase;
 }
 #footer {
-  background: #393939 !important;
+  background: #bdb9b9 !important;
 }
 #footer h5 {
   padding-left: 10px;
@@ -41,7 +41,7 @@ section .section-title {
   color: #ffffff;
 }
 #footer a {
-  color: #ffffff;
+  color: #cf0f0f;
   text-decoration: none !important;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
