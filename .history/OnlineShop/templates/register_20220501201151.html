@@ -1,0 +1,23 @@
+{% extends 'layout.html' %} {% block body %}
+<div
+  class="container badge-danger mb-4"
+  style="padding: 20 40; max-width: 500px; border-radius: 20px"
+>
+  <h2 style="text-align: center; color: #ffffff">Đăng ký</h2>
+  {% from "includes/_formhelpers.html" import render_field %}
+  <div style="padding-top: 20px">
+    <form method="POST" action="">
+      <div class="form-group">{{render_field(form.name, class_="form-control")}}</div>
+      <div class="form-group">{{render_field(form.email, class="form-control")}}</div>
+      <div class="form-group">{{render_field(form.username, class="form-control")}}</div>
+      <div class="form-group">{{render_field(form.password, class="form-control")}}</div>
+      <div class="form-group">{{render_field(form.mobile, class="form-control")}}</div>
+      <p>
+        <input type="submit" class="btn btn-primary" value="Sign Up" />
+      </p>
+    </form>
+  </div>
+  >
+</div>
+
+{% endblock %}
