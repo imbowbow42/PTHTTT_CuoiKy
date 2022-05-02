@@ -100,6 +100,7 @@
                                         <th>Mobile</th>
                                         <th>Registration Time</th>
                                         <th>Online</th>
+                                        <th>Management</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -112,6 +113,19 @@
                                         <td>{{product.mobile}}</td>
                                         <td>{{product.reg_time}}</td>
                                         <td>{{product.online}}</td>
+                                        <td>
+                                            {% if session['admin_role'] == 'manager' %}
+                                            <a href="/edit_product?id={{product.id}}">
+                                                <div class="">
+                                                    <span class="">Edit</span>
+                                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </a>
+                                            {% else %}
+                                            <p class="text-secondary">Not have permission</p>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                     {% endfor%}
                                     </tbody>
