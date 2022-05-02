@@ -16,7 +16,7 @@ app.config['UPLOADED_PHOTOS_DEST'] = 'static/image/product'
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
 
-# Config MySQL
+# Kết nối dữ liệu
 mysql = MySQL()
 app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_USER'] = 'root'
@@ -24,10 +24,10 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'pthttt'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-# Initialize the app for use with this MySQL class
+
 mysql.init_app(app)
 
-
+# Đã đăng nhập
 def is_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -38,7 +38,7 @@ def is_logged_in(f):
 
     return wrap
 
-
+# Chưa đăng nhập
 def not_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -49,7 +49,7 @@ def not_logged_in(f):
 
     return wrap
 
-
+# Đã đăng nhập bằng admin
 def is_admin_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -60,7 +60,7 @@ def is_admin_logged_in(f):
 
     return wrap
 
-
+# Chưa đăng chập admin
 def not_admin_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -122,30 +122,33 @@ def index():
     cur = mysql.connection.cursor()
     # Get message
     values = 'tshirt'
-    cur.execute("SELECT * FROM products WHERE category=%s ORDER BY RAND() LIMIT 4", (values,))
+    cur.execute("SELECT * FROM products WHERE category=%s ORDER BY RAND() LIMIT 8", (values,))
     tshirt = cur.fetchall()
     values = 'wallet'
-    cur.execute("SELECT * FROM products WHERE category=%s ORDER BY RAND() LIMIT 4", (values,))
+    cur.execute("SELECT * FROM products WHERE category=%s ORDER BY RAND() LIMIT 8", (values,))
     wallet = cur.fetchall()
     values = 'belt'
-    cur.execute("SELECT * FROM products WHERE category=%s ORDER BY RAND() LIMIT 4", (values,))
+    cur.execute("SELECT * FROM products WHERE category=%s ORDER BY RAND() LIMIT 8", (values,))
     belt = cur.fetchall()
     values = 'shoes'
-    cur.execute("SELECT * FROM products WHERE category=%s ORDER BY RAND() LIMIT 4", (values,))
+    cur.execute("SELECT * FROM products WHERE category=%s ORDER BY RAND() LIMIT 8", (values,))
     shoes = cur.fetchall()
+    values = 'laptop'
+    cur.execute("SELECT * FROM products WHERE category=%s ORDER BY RAND() LIMIT 8", (values,))
+    laptop = cur.fetchall()
     # Close Connection
     cur.close()
-    return render_template('home.html', tshirt=tshirt, wallet=wallet, belt=belt, shoes=shoes, form=form)
+    return render_template('home.html', tshirt=tshirt, wallet=wallet, belt=belt, shoes=shoes, laptop=laptop, form=form)
 
-
-class LoginForm(Form):  # Create Login Form
+# Form Đăng nhập
+class LoginForm(Form):  
     username = StringField('', [validators.length(min=1)],
                            render_kw={'autofocus': True, 'placeholder': 'Username'})
     password = PasswordField('', [validators.length(min=3)],
                              render_kw={'placeholder': 'Password'})
 
 
-# User Login
+# Đăng nhập
 @app.route('/login', methods=['GET', 'POST'])
 @not_logged_in
 def login():
@@ -181,17 +184,17 @@ def login():
                 return redirect(url_for('index'))
 
             else:
-                flash('Incorrect password', 'danger')
+                flash('Sai mật khẩu', 'danger')
                 return render_template('login.html', form=form)
 
         else:
-            flash('Username not found', 'danger')
+            flash('Tài khoản chưa đăng ký', 'danger')
             # Close connection
             cur.close()
             return render_template('login.html', form=form)
     return render_template('login.html', form=form)
 
-
+# Đăng xuất
 @app.route('/out')
 def logout():
     if 'uid' in session:
@@ -201,22 +204,22 @@ def logout():
         x = '0'
         cur.execute("UPDATE users SET online=%s WHERE id=%s", (x, uid))
         session.clear()
-        flash('You are logged out', 'success')
+        flash('Bạn đã đăng xuất', 'success')
         return redirect(url_for('index'))
     return redirect(url_for('login'))
 
-
+# Form đăng ký
 class RegisterForm(Form):
     name = StringField('', [validators.length(min=3, max=50)],
-                       render_kw={'autofocus': True, 'placeholder': 'Full Name'})
+                       render_kw={'autofocus': True, 'placeholder': 'Họ và tên'})
     username = StringField('', [validators.length(min=3, max=25)], render_kw={'placeholder': 'Username'})
     email = EmailField('', [validators.DataRequired(), validators.Email(), validators.length(min=4, max=25)],
                        render_kw={'placeholder': 'Email'})
     password = PasswordField('', [validators.length(min=3)],
                              render_kw={'placeholder': 'Password'})
-    mobile = StringField('', [validators.length(min=11, max=15)], render_kw={'placeholder': 'Mobile'})
+    mobile = StringField('', [validators.length(min=10, max=15)], render_kw={'placeholder': 'Số điện thoại'})
 
-
+# Đăng ký
 @app.route('/register', methods=['GET', 'POST'])
 @not_logged_in
 def register():
@@ -239,13 +242,13 @@ def register():
         # Close Connection
         cur.close()
 
-        flash('You are now registered and can login', 'success')
+        flash('Bạn đã đăng ký thành công', 'success')
 
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
 
 
-class MessageForm(Form):  # Create Message Form
+class MessageForm(Form):  
     body = StringField('', [validators.length(min=1)], render_kw={'autofocus': True})
 
 
@@ -298,21 +301,23 @@ def chats():
         cur.execute("SELECT * FROM messages WHERE (msg_by=%s AND msg_to=%s) OR (msg_by=%s AND msg_to=%s) "
                     "ORDER BY id ASC", (id, uid, uid, id))
         chats = cur.fetchall()
+       
         # Close Connection
         cur.close()
         return render_template('chats.html', chats=chats, )
-    return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
 
-
-class OrderForm(Form):  # Create Order Form
+# Form đặt hàng
+class OrderForm(Form): 
     name = StringField('', [validators.length(min=1), validators.DataRequired()],
-                       render_kw={'autofocus': True, 'placeholder': 'Full Name'})
+                       render_kw={'autofocus': True, 'placeholder': 'Họ và tên'})
     mobile_num = StringField('', [validators.length(min=1), validators.DataRequired()],
-                             render_kw={'autofocus': True, 'placeholder': 'Mobile'})
+                             render_kw={'autofocus': True, 'placeholder': 'Số điện thoại'})
     quantity = SelectField('', [validators.DataRequired()],
                            choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')])
     order_place = StringField('', [validators.length(min=1), validators.DataRequired()],
-                              render_kw={'placeholder': 'Order Place'})
+                              render_kw={'placeholder': 'Địa chỉ'})
 
 
 @app.route('/tshirt', methods=['GET', 'POST'])
@@ -832,6 +837,34 @@ def edit_product():
     else:
         return redirect(url_for('admin_login'))
 
+@app.route('/admin_add_employee', methods=['POST', 'GET'])
+@is_admin_logged_in
+def admin_add_employee():
+    if request.method == 'POST':
+        print(request.form)
+        fullName = request.form['fullName']
+        email = request.form['email']
+        address = request.form['address']
+        password = sha256_crypt.encrypt(str(request.form['password']))
+        phone = request.form['phone']
+        type = request.form['type']
+     
+        if fullName and email and address and password and phone and type:
+            # Create Cursor
+            curs = mysql.connection.cursor()
+            curs.execute("INSERT INTO admin(fullName, email, mobile, address, password, type)"
+                            "VALUES( %s, %s, %s, %s, %s, %s)",(fullName, email, phone, address, password, type))
+            mysql.connection.commit()
+    
+            # Close Connection
+            curs.close()
+
+            flash('Product added successful', 'success')
+            return redirect(url_for('admin_add_employee'))
+              
+            
+    else:
+        return render_template('pages/add_employee.html')
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
@@ -846,10 +879,10 @@ def search():
         products = cur.fetchall()
         # Close Connection
         cur.close()
-        flash('Showing result for: ' + q, 'success')
+        flash('Danh sách tìm kiếm sản phẩm: ' + q, 'success')
         return render_template('search.html', products=products, form=form)
     else:
-        flash('Search again', 'danger')
+        flash('Không tìm thấy sản phẩm', 'danger')
         return render_template('search.html')
 
 
@@ -867,24 +900,24 @@ def profile():
                 res = curso.fetchall()
                 return render_template('profile.html', result=res)
             else:
-                flash('Unauthorised', 'danger')
+                flash('Cần đăng nhập!', 'danger')
                 return redirect(url_for('login'))
         else:
-            flash('Unauthorised! Please login', 'danger')
+            flash('Cần đăng nhập!', 'danger')
             return redirect(url_for('login'))
     else:
-        flash('Unauthorised', 'danger')
+        flash('Cần đăng nhập!', 'danger')
         return redirect(url_for('login'))
 
 
 class UpdateRegisterForm(Form):
-    name = StringField('Full Name', [validators.length(min=3, max=50)],
-                       render_kw={'autofocus': True, 'placeholder': 'Full Name'})
+    name = StringField('Họ và tên', [validators.length(min=3, max=50)],
+                       render_kw={'autofocus': True, 'placeholder': 'Họ và tên'})
     email = EmailField('Email', [validators.DataRequired(), validators.Email(), validators.length(min=4, max=25)],
                        render_kw={'placeholder': 'Email'})
     password = PasswordField('Password', [validators.length(min=3)],
                              render_kw={'placeholder': 'Password'})
-    mobile = StringField('Mobile', [validators.length(min=11, max=15)], render_kw={'placeholder': 'Mobile'})
+    mobile = StringField('Số điện thoại', [validators.length(min=10, max=15)], render_kw={'placeholder': 'Số điện thoại'})
 
 
 @app.route('/settings', methods=['POST', 'GET'])
@@ -927,7 +960,7 @@ def settings():
 
 class DeveloperForm(Form):  #
     id = StringField('', [validators.length(min=1)],
-                     render_kw={'placeholder': 'Input a product id...'})
+                     render_kw={'placeholder': 'Nhập id sản phẩm'})
 
 
 @app.route('/developer', methods=['POST', 'GET'])

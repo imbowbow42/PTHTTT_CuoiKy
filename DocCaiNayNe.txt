@@ -1,6 +1,9 @@
 Chạy lệnh:
 source venv/Scripts/activate
+<<<<<<< HEAD
 pip install -r requirements.txt
+=======
+>>>>>>> d91121c4b4d7b5692fb3f7438dfe29671e2e5982
 cd OnlineShop
 python app.py
 

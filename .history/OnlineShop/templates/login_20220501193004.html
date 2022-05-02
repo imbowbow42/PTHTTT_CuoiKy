@@ -1,0 +1,55 @@
+{% extends 'layout.html' %} {% block body %} {% include 'includes/_flashmsg.html' %}
+<div class="container login-container">
+    <div class="row">
+        <div class="col-md-6 login-form-1">
+            <h3>Login Form 1</h3>
+            
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Your Email *" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Your Password *" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" value="Login" />
+                </div>
+                <div class="form-group">
+                    <a href="#" class="btnForgetPwd">Forget Password?</a>
+                </div>
+            
+        </div>
+        <div class="col-md-6 login-form-2">
+            <div class="login-logo">
+                <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+            </div>
+            <h3>Login Form 2</h3>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Your Email *" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Your Password *" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" value="Login" />
+                </div>
+                <div class="form-group">
+
+                    <a href="#" class="btnForgetPwd" value="Login">Forget Password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+  <div class="jumbotron">
+    <h2 style="text-align: center; color: #206aaa">Login Form</h2>
+    {% from "includes/_formhelpers.html" import render_field %}
+    <div>
+      <form method="POST" action="">
+        <div class="form-group">{{render_field(form.username, class_="form-control")}}</div>
+        <div class="form-group">{{render_field(form.password, class_="form-control")}}</div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

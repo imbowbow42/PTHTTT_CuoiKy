@@ -14,9 +14,12 @@
         Danh mục
       </button>
       <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Link 1</a>
-        <a class="dropdown-item" href="#">Link 2</a>
-        <a class="dropdown-item" href="#">Link 3</a>
+        <!-- <a href="/tshirt" class="list-group-item">T-Shirt</a>
+        <a href="/wallet" class="list-group-item">Wallet</a>
+        <a href="/belt" class="list-group-item">Belt</a>
+        <a href="/shoes" class="list-group-item">Shoes</a> -->
+        <a class="dropdown-item" href="/tshirt">T-Shirt</a>
+        <a class="dropdown-item" href="/wallet">Wallet</a>
       </div>
     </div>
     
@@ -66,12 +69,15 @@
           <div>{{session.s_name}}</div>
         </a>
       </li>
-    
-      <li class="nav-item" style="min-width: 100px; ">
-        <a href="/out" class="nav-link text-center alignt-center" style="text-decoration: none; margin-top: 10px;">
-          Đăng xuất
+
+      <li class="nav-item"style="min-width: 80px;">  
+        <a href="/chatting/{{session.uid}}" class="nav-link text-center">
+          <div><i class="fa-solid fa-comment-dots" style="font-size: 25px"></i></div>
+          <div>Hỗ trợ</div>
         </a>
       </li>
+    
+ 
       {% else %}
       <li class="nav-item" style="min-width: 100px;">
         <a href="/" class="nav-link text-center">

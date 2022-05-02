@@ -1,0 +1,21 @@
+{% extends 'layout.html' %} {% block body %} {% include 'includes/_flashmsg.html' %}
+<div
+  class="container badge-danger mb-4"
+  style="padding: 20 40; max-width: 500px; border-radius: 20px"
+>
+  <h2 style="text-align: center; color: #ffffff">Đăng nhập</h2>
+  {% from "includes/_formhelpers.html" import render_field %}
+  <div style="padding-top: 20px">
+    <form method="POST" action="">
+      <div class="form-group">{{render_field(form.username, class_="form-control")}}</div>
+      <div class="form-group">{{render_field(form.password, class_="form-control")}}</div>
+      <a href="/register">Đăng ký</a>
+
+      <button type="submit" class="btn btn-success" style="min-width: 150px; margin-top: 20px">
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

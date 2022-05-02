@@ -4,9 +4,19 @@
   <div class="row">
     <div class="col-lg-3">
       <h2 class="my-4"><i class="fa-solid fa-user"></i> {{session.s_name}}</h2>
+
       <div class="list-group">
         <a href="/profile?user={{session.uid}}" class="list-group-item">Danh sách đơn hàng</a>
         <a href="/settings?user={{session.uid}}" class="list-group-item">Cập nhật thông tin</a>
+      </div>
+      <div class="nav-item" style="min-width: 100px">
+        <a
+          href="/out"
+          class="nav-link text-center alignt-center"
+          style="text-decoration: none; margin-top: 10px"
+        >
+          Đăng xuất
+        </a>
       </div>
     </div>
     <!-- /.col-lg-3 -->
