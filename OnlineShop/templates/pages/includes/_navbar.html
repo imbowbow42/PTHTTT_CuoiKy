@@ -43,19 +43,26 @@
                     <div class="input-group custom-search-form">
                         <input type="text" class="form-control" placeholder="Search...">
                         <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
                     </div>
                     <!-- /input-group -->
                 </li>
                 <li>
                     <a href="/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
+                {% if session['admin_role']=='manager' %}
                 <li>
                     <a href="/admin_add_product"><i class="fa fa-edit fa-fw"></i> Add Product</a>
                 </li>
+                <li>
+                    <a href="/admin_add_employee"><i class="fa fa-edit fa-fw"></i> Add Employee</a>
+                </li>
+                {% else %}
+
+                {% endif %}
             </ul>
         </div>
         <!-- /.sidebar-collapse -->

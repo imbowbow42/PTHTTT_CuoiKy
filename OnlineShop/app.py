@@ -21,7 +21,7 @@ mysql = MySQL()
 app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'abd_db'
+app.config['MYSQL_DB'] = 'pthttt'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
@@ -659,14 +659,15 @@ def admin_login():
             data = cur.fetchone()
             password = data['password']
             uid = data['id']
-            name = data['firstName']
-
+            name = data['fullName']
+            role = data['type']
             # Compare password
             if sha256_crypt.verify(password_candidate, password):
                 # passed
                 session['admin_logged_in'] = True
                 session['admin_uid'] = uid
                 session['admin_name'] = name
+                session['admin_role'] = role
 
                 return redirect(url_for('admin'))
 
@@ -693,12 +694,13 @@ def admin_logout():
 @app.route('/admin')
 @is_admin_logged_in
 def admin():
+
     curso = mysql.connection.cursor()
     num_rows = curso.execute("SELECT * FROM products")
     result = curso.fetchall()
     order_rows = curso.execute("SELECT * FROM orders")
     users_rows = curso.execute("SELECT * FROM users")
-    return render_template('pages/index.html', result=result, row=num_rows, order_rows=order_rows,
+    return render_template('pages/index_admin.html', result=result, row=num_rows, order_rows=order_rows,
                            users_rows=users_rows)
 
 
@@ -904,6 +906,34 @@ def edit_product():
     else:
         return redirect(url_for('admin_login'))
 
+@app.route('/admin_add_employee', methods=['POST', 'GET'])
+@is_admin_logged_in
+def admin_add_employee():
+    if request.method == 'POST':
+        print(request.form)
+        fullName = request.form['fullName']
+        email = request.form['email']
+        address = request.form['address']
+        password = sha256_crypt.encrypt(str(request.form['password']))
+        phone = request.form['phone']
+        type = request.form['type']
+     
+        if fullName and email and address and password and phone and type:
+            # Create Cursor
+            curs = mysql.connection.cursor()
+            curs.execute("INSERT INTO admin(fullName, email, mobile, address, password, type)"
+                            "VALUES( %s, %s, %s, %s, %s, %s)",(fullName, email, phone, address, password, type))
+            mysql.connection.commit()
+    
+            # Close Connection
+            curs.close()
+
+            flash('Product added successful', 'success')
+            return redirect(url_for('admin_add_employee'))
+              
+            
+    else:
+        return render_template('pages/add_employee.html')
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():

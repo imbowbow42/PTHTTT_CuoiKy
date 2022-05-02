@@ -101,7 +101,7 @@
                                         <th>Category</th>
                                         <th>Item</th>
                                         <th>Code</th>
-                                        <th>Picture</th>
+                                        <th>Management</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -116,6 +116,7 @@
                                         <td>{{product.item}}</td>
                                         <td>{{product.pCode}}</td>
                                         <td>
+                                            {% if session['admin_role'] == 'manager' %}
                                             <a href="/edit_product?id={{product.id}}">
                                                 <div class="">
                                                     <span class="">Edit</span>
@@ -123,6 +124,9 @@
                                                     <div class="clearfix"></div>
                                                 </div>
                                             </a>
+                                            {% else %}
+                                            <p class="text-secondary">Not have permission</p>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                     {% endfor%}
