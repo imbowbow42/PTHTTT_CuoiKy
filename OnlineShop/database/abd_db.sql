@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 01, 2022 lúc 06:58 PM
+-- Thời gian đã tạo: Th5 02, 2022 lúc 07:36 PM
 -- Phiên bản máy phục vụ: 10.4.22-MariaDB
 -- Phiên bản PHP: 8.1.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `menshut`
+-- Cơ sở dữ liệu: `abd_db`
 --
 
 -- --------------------------------------------------------
@@ -29,22 +29,24 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
-  `firstName` varchar(125) NOT NULL,
-  `lastName` varchar(125) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `mobile` varchar(25) NOT NULL,
-  `address` text NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `type` varchar(20) NOT NULL,
-  `confirmCode` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `fullName` varchar(125) COLLATE utf8_vietnamese_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
+  `mobile` varchar(25) COLLATE utf8_vietnamese_ci NOT NULL,
+  `address` text COLLATE utf8_vietnamese_ci NOT NULL,
+  `password` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `confirmCode` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `admin`
 --
 
-INSERT INTO `admin` (`id`, `firstName`, `lastName`, `email`, `mobile`, `address`, `password`, `type`, `confirmCode`) VALUES
-(4, 'Nur', 'Mohsin', 'mohsin@gmail.com', '01677876551', 'Dhaka', '$5$rounds=535000$WOAOMdgoK2JpZLY5$RFH9BZQCB3NEvG4R/FofxxJL/PUaeZm7T6G9P3PRg05', 'manager', '0');
+INSERT INTO `admin` (`id`, `fullName`, `email`, `mobile`, `address`, `password`, `type`, `confirmCode`) VALUES
+(4, 'Nguyen Huu Dang', 'manager@gmail.com', '0123456789', 'Tay Ninh', '$5$rounds=535000$WOAOMdgoK2JpZLY5$RFH9BZQCB3NEvG4R/FofxxJL/PUaeZm7T6G9P3PRg05', 'manager', '0'),
+(5, 'Bao', 'emp1@gmail.com', '0123456789', 'Dong Thap', '$5$rounds=535000$WOAOMdgoK2JpZLY5$RFH9BZQCB3NEvG4R/FofxxJL/PUaeZm7T6G9P3PRg05', 'emp', '0'),
+(6, 'Nguyen Van A', 'emp3@gmail.com', '+847866282809', '454 Đường Nguyễn Chí Thanh', '$5$rounds=535000$Z9aodPH2/cgVLFcq$SiKFn4EsztYSk4u47r6LINu72QLxyAYWNrype2qtlV7', 'emp', ''),
+(7, 'cskh', 'cskh@gmail.com', '+847866282809', '454 Đường Nguyễn Chí Thanh', '$5$rounds=535000$Z9aodPH2/cgVLFcq$SiKFn4EsztYSk4u47r6LINu72QLxyAYWNrype2qtlV7', 'cskh', '');
 
 -- --------------------------------------------------------
 
@@ -59,22 +61,6 @@ CREATE TABLE `messages` (
   `msg_to` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Đang đổ dữ liệu cho bảng `messages`
---
-
-INSERT INTO `messages` (`id`, `body`, `msg_by`, `msg_to`) VALUES
-(1, 'sadsadas', 9, 16),
-(2, 'a', 14, 16),
-(3, 'b', 14, 16),
-(4, 'a', 9, 16),
-(5, 'av', 9, 16),
-(6, 'av', 9, 16),
-(7, 'dá', 9, 16),
-(8, 'd', 9, 16),
-(9, 'a', 14, 16),
-(10, 'a', 15, 16);
-
 -- --------------------------------------------------------
 
 --
@@ -84,32 +70,15 @@ INSERT INTO `messages` (`id`, `body`, `msg_by`, `msg_to`) VALUES
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `uid` int(11) DEFAULT NULL,
-  `ofname` text NOT NULL,
+  `ofname` text CHARACTER SET utf8 COLLATE utf8_vietnamese_ci NOT NULL,
   `pid` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `oplace` text NOT NULL,
-  `mobile` varchar(15) NOT NULL,
-  `dstatus` varchar(10) NOT NULL DEFAULT 'no',
+  `oplace` text CHARACTER SET utf8 COLLATE utf8_vietnamese_ci NOT NULL,
+  `mobile` varchar(15) CHARACTER SET utf8 COLLATE utf8_vietnamese_ci NOT NULL,
+  `dstatus` varchar(10) CHARACTER SET utf8 COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
   `odate` timestamp NOT NULL DEFAULT current_timestamp(),
   `ddate` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Đang đổ dữ liệu cho bảng `orders`
---
-
-INSERT INTO `orders` (`id`, `uid`, `ofname`, `pid`, `quantity`, `oplace`, `mobile`, `dstatus`, `odate`, `ddate`) VALUES
-(1, NULL, 'Kashmiri Chador', 1, 2, 'Khilkhet, Dhaka', '01609876543', 'no', '2018-09-21 13:05:07', NULL),
-(2, NULL, 'Nur Mohsin', 1, 3, 'Khilkhet, Dhaka', '01609876543', 'no', '2018-09-21 13:08:55', NULL),
-(3, NULL, 'Nur Mohsin', 2, 4, 'Dhaka', '09876543123', 'no', '2018-09-21 13:13:04', NULL),
-(4, NULL, 'Nur Mohsin', 4, 1, 'Manikganj', '798345', 'no', '2018-09-21 13:18:47', NULL),
-(5, NULL, 'Nur Mohsin', 9, 4, 'Dhaka, Bangladesh', '01609876543', 'no', '2018-09-22 02:01:02', NULL),
-(6, NULL, 'Nur Mohsin', 2, 1, 'Manikganj', '01609876543', 'no', '2018-09-22 02:09:29', NULL),
-(7, 9, 'Nur Mohsin', 2, 1, 'Manikganj', '01609876543', 'no', '2018-09-22 02:10:46', NULL),
-(8, 9, 'Nur Mohsin', 1, 1, 'Manikganj', '0994', 'no', '2018-09-22 03:04:13', NULL),
-(9, 9, 'Kashmiri Chador', 12, 4, 'Dhaka', '01609876543', 'no', '2018-09-22 03:21:14', '2018-09-29'),
-(10, 9, 'Chador', 13, 1, 'Dhaka', '01609876543', 'no', '2018-09-22 03:22:05', '2018-09-29'),
-(11, 16, 'd', 6, 1, 'NguyenHuu Dnawg', '+84786628280', 'no', '2022-05-01 13:19:59', '2022-05-08');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -119,42 +88,42 @@ INSERT INTO `orders` (`id`, `uid`, `ofname`, `pid`, `quantity`, `oplace`, `mobil
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
-  `pName` varchar(100) NOT NULL,
+  `pName` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
   `price` int(11) NOT NULL,
-  `description` text NOT NULL,
+  `description` mediumtext COLLATE utf8_vietnamese_ci NOT NULL,
   `available` int(11) NOT NULL,
-  `category` varchar(100) NOT NULL,
-  `item` varchar(100) NOT NULL,
-  `pCode` varchar(20) NOT NULL,
-  `picture` text NOT NULL,
+  `category` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
+  `item` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
+  `pCode` varchar(20) COLLATE utf8_vietnamese_ci NOT NULL,
+  `picture` mediumtext COLLATE utf8_vietnamese_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `products`
 --
 
 INSERT INTO `products` (`id`, `pName`, `price`, `description`, `available`, `category`, `item`, `pCode`, `picture`, `date`) VALUES
-(1, 'T-Shirt', 120, 'T-Shirt', 4, 'tshirt', 't-shirt', 't-007', 'MSTS14738.jpg', '2018-09-20 07:10:40'),
-(2, 'Baborry wallet', 6000, 'Baborry-Double-Zipper-Coin-Bag-RFID-Blocking-Men-Wallets-New-Brand-PU-Leather-Wallet-Money-Purses', 3, 'wallet', 'wallet', 'w-004', 'IMG_1212.jpg', '2018-09-20 07:40:28'),
-(3, 'Loafer Shoes', 2000, 'Loafer black shoes', 8, 'shoes', 'shoes', 's-001', '8544789_5_.jpg', '2018-09-20 08:33:57'),
-(4, 'Artificial Belt', 1200, 'Black artificial belt', 9, 'belt', 'belt', 'b-001', '0283BLT.jpg', '2018-09-20 08:35:44'),
-(5, 'Polo T-shirt', 500, 'Polo t-shirt', 10, 'tshirt', 't-shirt', 's-002', 'lp00-2.jpg', '2018-09-20 08:40:06'),
-(6, 'T-shirt', 300, 'Polo colorful t-shirt', 12, 'tshirt', 't-shirt', 't-003', 'yellow_2_.jpg', '2018-09-20 08:41:18'),
-(7, 'Tshirt', 200, 'Design t-shirt', 10, 'tshirt', 't-shirt', 't-004', 'MSTSV14042.jpg', '2018-09-20 08:42:11'),
-(8, 'T-shirt', 200, 'Color t-shirt', 20, 'tshirt', 't-shirt', 't-005', 'MSTS14759.jpg', '2018-09-20 08:45:39'),
-(9, 'Men\'s Tshirt', 500, 'Colorful men\'s t-shirt', 20, 'tshirt', 't-shirt', 't-006', 'MSTSV14046.jpg', '2018-09-20 08:57:07'),
-(10, 'Sports tshirt', 1000, 'Real madrid t-shirt', 5, 'tshirt', 't-shirt', 't-007', 'MSTSV14039.jpg', '2018-09-20 08:58:38'),
-(12, 'T-shirt', 300, 'Design t-shirt', 10, 'tshirt', 't-shirt', 't-010', 'MSTSV14049.jpg', '2018-09-20 09:02:04'),
-(13, 'Leather Shoes', 2000, 'Best leather shoes', 10, 'shoes', 'shoes', 's-002', '8546789_5_.jpg', '2018-09-21 10:39:32'),
-(14, 'Belt', 2000, 'Nice belt', 20, 'belt', 'belt', 'b-003', 'gbdl18_1.png', '2018-10-01 03:47:08'),
-(15, 'Belt', 300, 'Nice one belt', 20, 'belt', 'belt', 'b-004', '101010_1_.jpg', '2018-10-01 03:48:09'),
-(16, 'Mens Belt', 300, 'Mens belt', 15, 'belt', 'belt', 'b-005', 'image4_2.jpg', '2018-10-01 03:49:08'),
-(17, 'Leather Wallet', 100, 'Leather wallet', 10, 'wallet', 'wallet', 'w-005', 'Baborry-Double-Zipper-Coin-Bag-RFID-Blocking-Men-Wallets-New-Brand-PU-Leather-Wallet-Money-Purses.jpg_640x640.jpg', '2018-10-01 03:51:52'),
-(18, 'Wallet', 300, 'Wallet', 20, 'wallet', 'wallet', 'w-007', '1881_G.jpg', '2018-10-01 03:52:43'),
-(19, 'Black walllet', 300, 'Black mens wallet', 20, 'wallet', 'wallet', 'w-009', 'image5_1_2.jpg', '2018-10-01 03:53:37'),
-(20, 'Men\'s Shoes', 1200, 'Men\'s shoes', 23, 'shoes', 'shoes', 's-003', 'IMG_2429.jpg', '2018-10-01 03:56:41'),
-(21, 'Shoes', 2000, 'Formal Shoes', 12, 'shoes', 'shoes', 's-004', 'G51A7054.jpg', '2018-10-01 03:57:24');
+(1, 'Laptop ACER Gaming Aspire 7 ', 16000, '- CPU: AMD Ryzen 5 5500U\r\n- Màn hình: 15.6\" IPS (1920 x 1080), 144Hz\r\n- RAM: 1 x 8GB DDR4 3200MHz\r\n- Đồ họa: NVIDIA GeForce GTX 1650 4GB GDDR6 / AMD Radeon Graphics\r\n- Lưu trữ: 512GB SSD M.2 NVMe /\r\n- Hệ điều hành: Windows 11 Home\r\n- 48 Wh\r\n- Khối lượng: 2.1 kg', 20, 'laptop', 'balo', 'l-001', 'lap1.png', '2022-05-02 15:42:36'),
+(2, 'Laptop ASUS Gaming FX506LH-HN188W', 18000, '- CPU: Intel Core i5-10300H\r\n- Màn hình: 15.6\" IPS (1920 x 1080), 144Hz\r\n- RAM: 1 x 8GB DDR4\r\n- Đồ họa: NVIDIA GeForce GTX 1650 4GB GDDR6 / Intel UHD Graphics\r\n- Lưu trữ: 512GB SSD M.2 NVMe /\r\n- Hệ điều hành: Windows 11 Home\r\n- Pin: 3 cell 48 Wh\r\n- Khối lượng: 2.3 kg', 10, 'laptop', 'Balo', 'l-002', 'lap2.png', '2022-05-02 16:14:07'),
+(3, 'Laptop ASUS TUF Gaming ', 17000, '- CPU: AMD Ryzen 5 4600H\r\n- Màn hình: 15.6\" IPS (1920 x 1080), 144Hz\r\n- RAM: 1 x 8GB DDR4 3200MHz\r\n- Đồ họa: NVIDIA GeForce GTX 1650 4GB GDDR6 / AMD Radeon Graphics\r\n- Lưu trữ: 512GB SSD M.2 NVMe /\r\n- Hệ điều hành: Windows 11 Home\r\n- Pin: 3 cell 48 Wh Pin liền\r\n- Khối lượng: 2.3 kg', 15, 'laptop', 'None', 'l-003', 'lap3.png', '2022-05-02 16:25:22'),
+(4, 'Laptop Lenovo Ideapad Gaming 3', 17500, '- CPU: Intel Core i5-10300H\r\n- Màn hình: 15.6\" IPS (1920 x 1080), 120Hz\r\n- RAM: 1 x 8GB DDR4 2933MHz\r\n- Đồ họa: NVIDIA GeForce GTX 1650 4GB GDDR6 / Intel UHD Graphics\r\n- Lưu trữ: 512GB SSD M.2 NVMe /\r\n- Hệ điều hành: Windows 10 Home 64-bit\r\n- 45 Wh Pin liền\r\n- Khối lượng: 2.2 kg', 30, 'laptop', 'None', 'l-004', 'lap4.png', '2022-05-02 16:31:15'),
+(5, 'Laptop Lenovo Yoga Slim 7 Pro', 33000, '- CPU: Intel Core i7-11370H\r\n- Màn hình: 14\" OLED (2880 x 1800), 90Hz\r\n- RAM: 16GB Onboard LPDDR4X 4266MHz\r\n- Đồ họa: NVIDIA GeForce MX450 2GB GDDR6 / Intel Iris Xe Graphics\r\n- Lưu trữ: 1TB SSD M.2 NVMe /\r\n- Hệ điều hành: Windows 11 Home\r\n- 61 Wh Pin liền\r\n- Khối lượng: 1.3 kg', 12, 'laptop', 'balo', 'l-005', 'lap5.png', '2022-05-02 16:33:30'),
+(6, 'Laptop Dell Vostro 14 3400 Office', 21000, '- CPU: Intel Core i5-1135G7\r\n- Màn hình: 14\" (1920 x 1080)\r\n- RAM: 1 x 8GB DDR4 3200MHz\r\n- Đồ họa: NVIDIA GeForce MX330 2GB GDDR5 / Intel Iris Xe Graphics\r\n- Lưu trữ: 512GB SSD M.2 NVMe /\r\n- Hệ điều hành: Windows 11 Home SL 64-bit + Office\r\n- Pin: 3 cell 42 Wh\r\n- Khối lượng: 1.6 kg', 10, 'laptop', 'None', 'l-006', 'lap6.png', '2022-05-02 16:35:04'),
+(7, 'Laptop ASUS Vivobook Office S533EQ', 19000, '- CPU: Intel Core i5-1135G7\r\n- Màn hình: 15.6\" IPS (1920 x 1080)\r\n- RAM: 8GB Onboard DDR4 3200MHz\r\n- Đồ họa: NVIDIA GeForce MX350 2GB GDDR5 / Intel Iris Xe Graphics\r\n- Lưu trữ: 512GB SSD M.2 NVMe /\r\n- Hệ điều hành: Windows 10 Home SL 64-bit\r\n- Pin: 3 cell 50 Wh Pin liền\r\n- Khối lượng: 1.6 kg', 23, 'laptop', 'balo', 'l-007', 'lap7.png', '2022-05-02 16:36:36'),
+(8, 'Laptop APPLE MacBook Pro 2021 14', 53000, '- CPU: Apple M1 Pro\r\n- Màn hình: 14\" (3024 x 1964)\r\n- RAM: 16GB\r\n- Đồ họa:\r\n- Lưu trữ: 512GB SSD /\r\n- Hệ điều hành: macOS\r\n- 70 Wh\r\n- Khối lượng: 1.6 kg', 50, 'laptop', 'None', 'l-008', 'lap8.png', '2022-05-02 16:38:16'),
+(9, 'Màn Hình Dell 21.5\" E2216HV', 3600, '- Kích thước: 21.5\"\r\n- Độ phân giải: 1920 x 1080 ( 16:9 )\r\n- Công nghệ tấm nền: TN\r\n- Góc nhìn: 90 (H) / 65 (V)\r\n- Tần số quét: 60Hz\r\n- Thời gian phản hồi: 5 ms', 20, 'screen', 'none', 's-001', 'sc1.png', '2022-05-02 17:01:49'),
+(10, 'Màn hình LCD Dell E2222HS ', 4000, '- Kích thước: 21.5\" (1920 x 1080), Tỷ lệ 16:9\r\n- Tấm nền VA, Góc nhìn: 178 (H) / 178 (V)\r\n- Tần số quét: 60Hz , Thời gian phản hồi 5 ms\r\n- HIển thị màu sắc: 16.7 triệu màu\r\n- Cổng hình ảnh: 1 x DisplayPort 1.2, 1 x HDMI 1.2, 1 x VGA/D-sub', 30, 'screen', 'none', 's-002', 'sc2.png', '2022-05-02 17:03:45'),
+(11, 'Màn hình LCD Dell U2520D', 10000, '- Kích thước: 25\"\r\n\r\n- Độ phân giải: 2560 x 1440 ( 16:9 )\r\n\r\n- Công nghệ tấm nền: IPS\r\n\r\n- Góc nhìn: 178 (H) / 178 (V)\r\n\r\n- Tần số quét: 60Hz\r\n\r\n- Thời gian phản hồi: 8 ms', 10, 'screen', 'none', 's-003', 'sc3.png', '2022-05-02 17:05:56'),
+(12, 'Màn Hình Acer Nitro 23.8', 4200, '- Kích thước: 23.8\"\r\n- Độ phân giải: 1920 x 1080 ( 16:9 )\r\n- Công nghệ tấm nền: IPS\r\n- Góc nhìn: 178 (H) / 178 (V)\r\n- Tần số quét: 75Hz\r\n- Thời gian phản hồi: 1 ms', 10, 'screen', 'none', 's-004', 'sc4.png', '2022-05-02 17:07:34'),
+(13, 'Bàn phím cơ Gaming Logitech G Pro X', 3800, '- Loại kết nối bàn phím: Bàn phím có dây\r\n- Kết nối của bàn phím: USB\r\n- Kích thước của bàn phím: Tenkeyless', 50, 'keyboard', 'none', 'k-001', 'kb1.png', '2022-05-02 17:22:19'),
+(14, 'Bàn phím cơ Logitech Gaming G813', 3100, '- Bàn phím cơ\r\n- Kết nối: USB\r\n- Switch: GL Clicky\r\n- Phím chức năng: Có', 30, 'keyboard', 'none', 'k-002', 'kb2.png', '2022-05-02 17:23:30'),
+(15, 'Bàn phím Logitech Bluetooth K380', 800, '- Bàn phím thường\r\n- Kết nối Bluetooth', 100, 'keyboard', 'none', 'k-003', 'kb3.png', '2022-05-02 17:25:18'),
+(16, 'Bàn phím gập Bluetooth MIPOW MINI', 1600, '- 65 phím với 120 chức năng\r\n- Túi có thể gập lại gọn gàng\r\n- Nguồn điện Chế độ tiết kiệm năng lượng\r\n- Không hoạt động 10 phút tự chuyển sang chế độ Ngủ\r\n- Khi hết pin, đèn LED đỏ nhấp nháy\r\n- Không thấm nước\r\n- Hỗ trợ Apple TV, Smart TV bật', 20, 'keyboard', 'none', 'k-004', 'kb4.png', '2022-05-02 17:27:12'),
+(17, 'Chuột gaming Logitech G502 HERO', 1100, '- Kiểu kết nối: Có dây\r\n- Cảm biến: HERO\r\n- Độ phân giải: 16000 DPI\r\n- Tốc độ phản hồi: 1000 Hz (1ms)\r\n- Màu sắc: Đen', 10, 'mouse', 'none', 'm-001', 'm1.png', '2022-05-02 17:30:09'),
+(18, 'Chuột chơi game Logitech G304 Wireless', 800, '- Kiểu kết nối: Không dây\r\n- Dạng cảm biến: HERO\r\n- Độ phân giải: 12000 DPI\r\n- Tốc độ phản hồi: 1000 Hz (1 ms)\r\n- Màu sắc: Đen', 10, 'mouse', 'none', 'm-002', 'm2.png', '2022-05-02 17:31:31'),
+(19, 'Chuột GIGABYTE Aorus M5 Gaming', 1500, '- Thương hiệu: Gigabyte \r\n- Chuẩn kết nối: USB \r\n- Omron Switch, RGB Led tích hợp', 10, 'mouse', 'none', 'm-003', 'm3.png', '2022-05-02 17:32:28'),
+(20, 'Chuột gaming CORSAIR IRONCLAW Wireless', 2000, '- Chuột chơi game IRONCLAW RGB dành cho game FPS và MOBA \r\n- Cảm biến quang học với DPI lên đến 18.000 \r\n- Khối lượng thân chuột 105g cùng thiết kế dạng cong phù hợp cho kiểu cầm palm-grips và người dùng có bàn tay to', 30, 'mouse', 'none', 'm-004', 'm4.png', '2022-05-02 17:33:24');
 
 -- --------------------------------------------------------
 
@@ -165,44 +134,52 @@ INSERT INTO `products` (`id`, `pName`, `price`, `description`, `available`, `cat
 CREATE TABLE `product_level` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `v_shape` varchar(10) NOT NULL DEFAULT 'no',
-  `polo` varchar(10) NOT NULL DEFAULT 'no',
-  `clean_text` varchar(10) NOT NULL DEFAULT 'no',
-  `design` varchar(10) NOT NULL DEFAULT 'no',
-  `chain` varchar(10) NOT NULL DEFAULT 'no',
-  `leather` varchar(10) NOT NULL DEFAULT 'no',
-  `hook` varchar(10) NOT NULL DEFAULT 'no',
-  `color` varchar(10) NOT NULL DEFAULT 'no',
-  `formal` varchar(10) NOT NULL DEFAULT 'no',
-  `converse` varchar(10) NOT NULL DEFAULT 'no',
-  `loafer` varchar(10) NOT NULL DEFAULT 'no'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `dell` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `asus` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `apple` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `lenovo` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `gaming` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `office` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `acer` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `screen_4k` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `screen_2k` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `bluetooth` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `cable` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `screen_22` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `screen_24` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `screen_gaming` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `screen_graphics` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `new_product` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `logitech` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `razer` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no',
+  `edra` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'no'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `product_level`
 --
 
-INSERT INTO `product_level` (`id`, `product_id`, `v_shape`, `polo`, `clean_text`, `design`, `chain`, `leather`, `hook`, `color`, `formal`, `converse`, `loafer`) VALUES
-(1, 1, 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
-(2, 2, 'no', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'no', 'no', 'no'),
-(3, 3, 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes'),
-(4, 4, 'no', 'no', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'no', 'no'),
-(5, 5, 'no', 'yes', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
-(6, 6, 'no', 'yes', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
-(7, 7, 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
-(8, 8, 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
-(9, 9, 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
-(10, 10, 'yes', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
-(14, 14, 'no', 'no', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'no', 'no'),
-(12, 12, 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
-(13, 13, 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes'),
-(15, 15, 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'yes', 'no', 'no', 'no'),
-(16, 16, 'no', 'no', 'no', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'no'),
-(17, 17, 'no', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'no', 'no', 'no'),
-(18, 18, 'no', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'no', 'no', 'no'),
-(19, 19, 'no', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'no', 'no', 'no'),
-(20, 20, 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'yes', 'no'),
-(21, 21, 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no');
+INSERT INTO `product_level` (`id`, `product_id`, `dell`, `asus`, `apple`, `lenovo`, `gaming`, `office`, `acer`, `screen_4k`, `screen_2k`, `bluetooth`, `cable`, `screen_22`, `screen_24`, `screen_gaming`, `screen_graphics`, `new_product`, `logitech`, `razer`, `edra`) VALUES
+(1, 1, 'no', 'no', 'no', 'no', 'yes', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(2, 2, 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(3, 3, 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(4, 4, 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(5, 5, 'no', 'no', 'no', 'yes', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(6, 6, 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(7, 7, 'no', 'yes', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(8, 8, 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(9, 9, 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(10, 10, 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(11, 11, 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(12, 12, 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(13, 13, 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no'),
+(14, 14, 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(15, 15, 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no'),
+(16, 16, 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(17, 17, 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(18, 18, 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(19, 19, 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'),
+(20, 20, 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no');
 
 -- --------------------------------------------------------
 
@@ -215,29 +192,7 @@ CREATE TABLE `product_view` (
   `user_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Đang đổ dữ liệu cho bảng `product_view`
---
-
-INSERT INTO `product_view` (`id`, `user_id`, `product_id`, `date`) VALUES
-(1, 9, 9, '2018-09-22 02:19:30'),
-(2, 9, 7, '2018-09-27 02:47:43'),
-(3, 9, 12, '2018-09-22 03:20:59'),
-(4, 9, 10, '2018-09-29 03:07:11'),
-(5, 9, 5, '2018-09-22 03:19:19'),
-(6, 9, 8, '2018-09-21 15:57:50'),
-(7, 9, 6, '2018-09-22 02:12:54'),
-(8, 9, 1, '2018-09-22 03:03:36'),
-(9, 16, 6, '2022-05-01 16:41:31'),
-(10, 16, 10, '2022-05-01 15:35:33'),
-(11, 16, 8, '2022-05-01 14:41:15'),
-(12, 16, 5, '2022-05-01 16:41:28'),
-(13, 16, 12, '2022-05-01 15:12:40'),
-(14, 16, 1, '2022-05-01 15:01:48'),
-(15, 16, 9, '2022-05-01 15:35:16'),
-(16, 16, 7, '2022-05-01 15:12:32');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 -- --------------------------------------------------------
 
@@ -247,27 +202,24 @@ INSERT INTO `product_view` (`id`, `user_id`, `product_id`, `date`) VALUES
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `username` varchar(25) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `mobile` varchar(20) NOT NULL,
+  `name` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8_vietnamese_ci NOT NULL,
+  `username` varchar(25) COLLATE utf8_vietnamese_ci NOT NULL,
+  `password` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
+  `mobile` varchar(20) COLLATE utf8_vietnamese_ci NOT NULL,
   `reg_time` timestamp NOT NULL DEFAULT current_timestamp(),
-  `online` varchar(1) NOT NULL DEFAULT '0',
-  `activation` varchar(3) NOT NULL DEFAULT 'yes'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `online` varchar(1) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT '0',
+  `activation` varchar(3) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'yes',
+  `role` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL DEFAULT 'user'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `username`, `password`, `mobile`, `reg_time`, `online`, `activation`) VALUES
-(12, 'Mukul', 'mukul@gmail.com', 'mukul', '$5$rounds=535000$6PJhbzFlfJbcQbza$FbrPa3qqk1RJ5MSffRLO6LrQJXbgO8SudFuBpNf.wR7', '', '2018-07-23 14:09:14', '0', 'yes'),
-(9, 'Nur Mohsin', 'mohsin@gmail.com', 'mohsin', '$5$rounds=535000$EnLkwqfGWGcWklRL$q9PbYw/TVXSzs.QpgUouZ3.6BzaPG2eLHkTyv.Qx80D', '123456789022', '2018-07-21 06:47:57', '1', 'yes'),
-(14, 'Nur Mohsin', 'khan@gmail.com', 'khan', '$5$rounds=535000$wLKTQexvPQHueUsK$aFrFUXBHjrrAH61EFiYgj8cZECaaz8y6S5XS/zkkHw9', '', '2018-09-07 09:02:35', '0', 'yes'),
-(13, 'Robin', 'robin@gmail.com', 'robin', '$5$rounds=535000$uiZc/VCwwa3XCTTe$Ec.JOjy4GkjpAXHtAvGt6pSc6KszajHgcyZy8v6Ivk1', '', '2018-07-26 12:36:57', '0', 'yes'),
-(15, 'Sujon', 'sujon@yahoo.com', 'sujons', '$5$rounds=535000$aGykDT1yrocgTaDt$p2dDAMDz9g3N6o/Jj7QJY9B6NnMlUot.DCq/LOsCS13', '89345793753', '2018-09-08 13:58:36', '0', 'yes'),
-(16, 'dang', 'a@gmail.com', 'dang', '$5$rounds=535000$lGtW0lOiCG2IW47Y$sqN34AZA1fsmSiDF9cCuR3FBUE2Jd1NRD7K9CTjg9y/', '01234567891', '2022-05-01 13:18:36', '1', 'yes');
+INSERT INTO `users` (`id`, `name`, `email`, `username`, `password`, `mobile`, `reg_time`, `online`, `activation`, `role`) VALUES
+(16, 'dang', 'a@gmail.com', 'dang', '$5$rounds=535000$lGtW0lOiCG2IW47Y$sqN34AZA1fsmSiDF9cCuR3FBUE2Jd1NRD7K9CTjg9y/', '01234567891', '2022-05-01 13:18:36', '1', 'yes', 'user'),
+(17, 'cskh', 'cskh@gmail.com', 'cskh', '$5$rounds=535000$lGtW0lOiCG2IW47Y$sqN34AZA1fsmSiDF9cCuR3FBUE2Jd1NRD7K9CTjg9y/', '01234567891', '2022-05-01 13:18:36', '0', 'yes', 'cskh');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -323,43 +275,43 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `product_level`
 --
 ALTER TABLE `product_level`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `product_view`
 --
 ALTER TABLE `product_view`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

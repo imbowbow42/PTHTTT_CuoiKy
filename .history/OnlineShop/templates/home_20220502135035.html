@@ -1,0 +1,267 @@
+{% extends 'layout.html' %} {% block body %}
+<!-- Page Content -->
+<div class="container">
+  <div class="row">
+    <!-- /.col-lg-3 -->
+    <div class="col-lg-12">
+      <div class="container bg-danger rounded d-flex justify-content-between" style="padding: 5px">
+        <h4>
+          <a href="" class="text-white" style="text-decoration: none; margin-left: 10px"
+            >Sản phẩm mới</a
+          >
+        </h4>
+        <div
+          class="d-flex flex-row-reverse"
+          style="text-align: center; margin-top: 5px; margin-right: 10px"
+        >
+          <a href="" style="text-decoration: none; color: white">Xem thêm</a>
+        </div>
+      </div>
+      <!-- Banner -->
+      <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox" style="max-height: 300px">
+          <div class="carousel-item active">
+            <img
+              class="d-block img-fluid"
+              src="/static/image/banner/laptop-banner.jpg"
+              alt="Laptop"
+              width="1300"
+              height="300"
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              class="d-block img-fluid"
+              src="/static/image/banner/screen-banner.jpg"
+              alt="Màn hình"
+              width="1300"
+              height="300"
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              class="d-block img-fluid"
+              src="/static/image/banner/keyboard-banner.jpg"
+              alt="Bàn phím"
+              width="1300"
+              height="300"
+            />
+          </div>
+        </div>
+        <a
+          class="carousel-control-prev"
+          href="#carouselExampleIndicators"
+          role="button"
+          data-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a
+          class="carousel-control-next"
+          href="#carouselExampleIndicators"
+          role="button"
+          data-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+
+      <div class="row" style="padding: 20 0">
+        <div class="col-sm-4" style="margin: 5 0">
+          <div class="well">
+            <div class="carousel-item active">
+              <img
+                class="d-block img-fluid"
+                src="/static/image/banner/laptop-banner.jpg"
+                alt="Laptop"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4" style="margin: 5 0">
+          <div class="well">
+            <div class="carousel-item active">
+              <img
+                class="d-block img-fluid"
+                src="/static/image/banner/laptop-banner.jpg"
+                alt="Laptop"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4" style="margin: 5 0">
+          <div class="well">
+            <div class="carousel-item active">
+              <img
+                class="d-block img-fluid"
+                src="/static/image/banner/laptop-banner.jpg"
+                alt="Laptop"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container bg-danger rounded d-flex justify-content-between" style="padding: 5px">
+        <h4>
+          <a href="/laptop" class="text-white" style="text-decoration: none; margin-left: 10px"
+            >Laptop</a
+          >
+        </h4>
+        <div
+          class="d-flex flex-row-reverse"
+          style="text-align: center; margin-top: 5px; margin-right: 10px"
+        >
+          <a href="/laptop" style="text-decoration: none; color: white">Xem thêm</a>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px">
+        {% for product in laptop %} {% if product.category == 'laptop' %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="card mb-4">
+            <a href="/{{product.category}}?view={{product.id}}" class="text-decoration-none">
+              <div
+                class="card-img-top id_{{product.id}}"
+                style="background: url('static/image/product/{{product.category}}/{{product.picture}}'); background-repeat:no-repeat; background-size: cover; height:250px;width:100% "
+              ></div>
+
+              <div class="card-body">
+                <h5 class="card-title text-dark">{{ product.pName}}</h5>
+                <h4 class="text-danger">{{product.price}}đ</h4>
+                <span class="text-warning"></span>
+              </div>
+            </a>
+          </div>
+          <!-- /.card -->
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+
+      <!--  -->
+      <div class="container bg-danger rounded d-flex justify-content-between" style="padding: 5px">
+        <h4>
+          <a href="/keyboard" class="text-white" style="text-decoration: none; margin-left: 10px"
+            >Bàn phím</a
+          >
+        </h4>
+        <div
+          class="d-flex flex-row-reverse"
+          style="text-align: center; margin-top: 5px; margin-right: 10px"
+        >
+          <a href="/keyboard" style="text-decoration: none; color: white">Xem thêm</a>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px">
+        {% for product in keyboard %} {% if product.category == 'keyboard' %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="card mb-4">
+            <a href="/{{product.category}}?view={{product.id}}" class="text-decoration-none">
+              <div
+                class="card-img-top id_{{product.id}}"
+                style="background: url('static/image/product/{{product.category}}/{{product.picture}}'); background-repeat:no-repeat; background-size: cover; height:250px;width:100% "
+              ></div>
+
+              <div class="card-body">
+                <h5 class="card-title text-dark">{{ product.pName}}</h5>
+                <h4 class="text-danger">{{product.price}}đ</h4>
+                <span class="text-warning"></span>
+              </div>
+            </a>
+          </div>
+          <!-- /.card -->
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+      <!--  -->
+
+      <!--  -->
+      <div class="container bg-danger rounded d-flex justify-content-between" style="padding: 5px">
+        <h4>
+          <a href="/screen" class="text-white" style="text-decoration: none; margin-left: 10px"
+            >Màn hình</a
+          >
+        </h4>
+        <div
+          class="d-flex flex-row-reverse"
+          style="text-align: center; margin-top: 5px; margin-right: 10px"
+        >
+          <a href="/screen" style="text-decoration: none; color: white">Xem thêm</a>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px">
+        {% for product in screen %} {% if product.category == 'screen' %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="card mb-4">
+            <a href="/{{product.category}}?view={{product.id}}" class="text-decoration-none">
+              <div
+                class="card-img-top id_{{product.id}}"
+                style="background: url('static/image/product/{{product.category}}/{{product.picture}}'); background-repeat:no-repeat; background-size: cover; height:250px;width:100% "
+              ></div>
+
+              <div class="card-body">
+                <h5 class="card-title text-dark">{{ product.pName}}</h5>
+                <h4 class="text-danger">{{product.price}}đ</h4>
+                <span class="text-warning"></span>
+              </div>
+            </a>
+          </div>
+          <!-- /.card -->
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+      <!--  -->
+      <!--  -->
+      <div class="container bg-danger rounded d-flex justify-content-between" style="padding: 5px">
+        <h4>
+          <a href="/mouse" class="text-white" style="text-decoration: none; margin-left: 10px"
+            >Chuọt</a
+          >
+        </h4>
+        <div
+          class="d-flex flex-row-reverse"
+          style="text-align: center; margin-top: 5px; margin-right: 10px"
+        >
+          <a href="/mouse" style="text-decoration: none; color: white">Xem thêm</a>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px">
+        {% for product in mouse %} {% if product.category == 'mouse' %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="card mb-4">
+            <a href="/{{product.category}}?view={{product.id}}" class="text-decoration-none">
+              <div
+                class="card-img-top id_{{product.id}}"
+                style="background: url('static/image/product/{{product.category}}/{{product.picture}}'); background-repeat:no-repeat; background-size: cover; height:250px;width:100% "
+              ></div>
+
+              <div class="card-body">
+                <h5 class="card-title text-dark">{{ product.pName}}</h5>
+                <h4 class="text-danger">{{product.price}}đ</h4>
+                <span class="text-warning"></span>
+              </div>
+            </a>
+          </div>
+          <!-- /.card -->
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+      <!--  -->
+
+      <!-- /.row -->
+    </div>
+    <!-- /.col-lg-9 -->
+  </div>
+  <!-- /.row -->
+</div>
+<!-- /.container -->
+{% endblock %}

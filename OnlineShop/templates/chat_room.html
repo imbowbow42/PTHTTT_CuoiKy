@@ -35,10 +35,10 @@
         margin-bottom: 8px;
       "
     >
-      <span>Hỗ trợ khách hàng</span>
+      <span>Danh sách người dùng</span>
     </div>
     <ul class="list-group">
-      {% for user in users %} {% if user.id != session.uid %}
+      {%if role == 'cskh'%} {% for user in users %} {% if user.id != session.uid %}
       <li class="list-group-item">
         <a href="{{user.id}}"> {{user.name}} </a>
         {% if user.online != "0" %}
@@ -65,7 +65,34 @@
         ></span>
         {% endif %}
       </li>
-      {% endif %} {% endfor %}
+      {% endif %} {% endfor %} {% else %} {% for user in users %} {% if user.role == 'cskh'%}
+      <li class="list-group-item">
+        <a href="{{user.id}}"> {{user.name}} </a>
+        {% if user.online != "0" %}
+        <span
+          style="
+            height: 12px;
+            width: 12px;
+            background-color: #1fc124;
+            border-radius: 6px;
+            float: right;
+            margin-top: 5px;
+          "
+        ></span>
+        {% else %}
+        <span
+          style="
+            height: 12px;
+            width: 12px;
+            background-color: #8a8a8a;
+            border-radius: 6px;
+            float: right;
+            margin-top: 5px;
+          "
+        ></span>
+        {% endif %}
+      </li>
+      {% endif %} {% endfor %} {% endif %}
     </ul>
   </div>
   <div
@@ -103,7 +130,7 @@
     </div>
     {% else %}
     <div style="text-align: center">
-      <h1>Welcome to Chat Room</h1>
+      <h1>Hỗ trợ trực tuyến</h1>
       <p class="lead">Chọn nhân viên hỗ trợ</p>
     </div>
     {% endif %} {% endif %}

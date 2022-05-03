@@ -1,0 +1,96 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm fixed-top">
+
+    <div class="navbar-brand" style="width: 80; height: 80">
+      <a href="/"/>
+        <img
+          src="/static/image/logo/logo-2.png"
+          alt="Logo"
+          style="width: 100px; display: flex; margin-left: 30px;">
+        </a>
+    </div>
+ 
+    <div class="nav-item dropdown" style="margin-left: 120px">
+      <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+        Danh mục
+      </button>
+      <div class="dropdown-menu">
+        <!-- <a href="/tshirt" class="list-group-item">T-Shirt</a>
+        <a href="/wallet" class="list-group-item">Wallet</a>
+        <a href="/belt" class="list-group-item">Belt</a>
+        <a href="/shoes" class="list-group-item">Shoes</a> -->
+        <a class="dropdown-item" href="/tshirt">T-Shirt</a>
+        <a class="dropdown-item" href="/wallet">Wallet</a>
+      </div>
+    </div>
+    
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarResponsive"
+    aria-controls="navbarResponsive"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+
+  <div class="collapse navbar-collapse" id="navbarResponsive">
+    <div class="input-group p-0 justify-content-center">
+      <form action="/search" method="get" class="w-100 m-0" style="padding-right: 20%">
+        <div class="input-group-append rounded-left">
+          <input
+            type="text"
+            class="form-control rounded-left form-control-sm"
+            autocomplete="off"
+            style="border-radius: 0; margin-left: 20px; height: 40px"
+            name="q"
+            placeholder="Tìm kiếm sản phẩm"
+          />
+          <button class="btn btn-danger rounded-right" style="border-radius: 0" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <ul class="navbar-nav">
+      
+      {% if session.logged_in %}
+      <li class="nav-item" style="min-width: 100px;">
+        <a href="/" class="nav-link text-center">
+          <div><i class="fa-solid fa-house" style="font-size: 25px"></i></div>
+          <div>Trang chủ</div>
+        </a>
+      </li>
+      <li class="nav-item" style="min-width: 150px;">
+        <a href="/profile?user={{session.uid}}" class="nav-link text-center">
+          <div><i class="fa-regular fa-user" style="font-size: 25px"></i></div>
+          <div>{{session.s_name}}</div>
+        </a>
+      </li>
+    
+      <li class="nav-item" style="min-width: 100px; ">
+        <a href="/out" class="nav-link text-center alignt-center" style="text-decoration: none; margin-top: 10px;">
+          Đăng xuất
+        </a>
+      </li>
+      {% else %}
+      <li class="nav-item" style="min-width: 100px;">
+        <a href="/" class="nav-link text-center">
+          <div><i class="fa-solid fa-house" style="font-size: 25px"></i></div>
+          <div>Trang chủ</div>
+        </a>
+      </li>
+    
+      <li class="nav-item" style="min-width: 100px;">
+        <a href="/login" class="nav-link text-center">
+          <div><i class="fa-solid fa-circle-user" style="font-size: 25px"></i></div>
+          <div>Đăng nhập</div>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+

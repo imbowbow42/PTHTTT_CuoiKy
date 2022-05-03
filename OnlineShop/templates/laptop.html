@@ -5,10 +5,12 @@
     <div class="col-lg-3">
       <h1 class="my-4">Laptop</h1>
       <div class="list-group">
-        <a href="/laptop" class="list-group-item active bg-danger">Laptop</a>
-        <a href="/screen" class="list-group-item">Màn hình</a>
-        <a href="/keyboard" class="list-group-item">Bàn phím</a>
-        <a href="/mouse" class="list-group-item">Chuột + Lót chuột</a>
+        <a href="/search?q=gaming" class="list-group-item list-group-item-action">Gaming</a>
+        <a href="/search?q=office" class="list-group-item list-group-item-action">Office</a>
+        <a href="/search?q=apple" class="list-group-item list-group-item-action">Apple</a>
+        <a href="/search?q=dell" class="list-group-item list-group-item-action">Dell</a>
+        <a href="/search?q=asus" class="list-group-item list-group-item-action">Asus</a>
+        <a href="/search?q=acer" class="list-group-item list-group-item-action">Acer</a>
       </div>
     </div>
     <!-- /.col-lg-3 -->
@@ -20,7 +22,7 @@
           <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
           <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
         </ol>
-        <div class="carousel-inner" role="listbox" style="height: 400px">
+        <div class="carousel-inner" role="listbox" style="max-height: 300px">
           <div class="carousel-item active">
             <img
               class="d-block img-fluid"
@@ -42,7 +44,7 @@
           <div class="carousel-item">
             <img
               class="d-block img-fluid"
-              src="/static/image/other/Laptop-wallpaper.jpg"
+              src="/static/image/other/t-shirt-wallpaper.jpg"
               alt="New York"
               width="1100"
               height="300"
@@ -80,13 +82,9 @@
               ></div>
             </a>
             <div class="card-body">
-              <h5 class="card-title">
-                <a href="/laptop?view={{product.id}}">{{product.pName}}</a>
-              </h5>
-              <h4>{{product.price}} VNĐ</h4>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted"></small>
+              <h5 class="card-title text-dark">{{ product.pName}}</h5>
+              <h4 class="text-danger">{{product.price}}đ</h4>
+              <span class="text-warning"></span>
             </div>
           </div>
         </div>
