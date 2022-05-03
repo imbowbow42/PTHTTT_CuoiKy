@@ -34,11 +34,11 @@
               {% from "includes/_formhelpers.html" import render_field %}
               <form method="POST" action="/{{product.category}}?order={{product.id}}">
                 <h6>Họ và tên</h6>
-                <div class="form-group">{{render_field(form.name, class_="form-control", value=session.s_name)}}</div>
+                <div class="form-group">{{render_field(form.name, class_="form-control", value=user.name)}}</div>
                
                 <h6>Số điện thoại</h6>
                 <div class="form-group">
-                  {{render_field(form.mobile_num, class_="form-control")}}
+                  {{render_field(form.mobile_num, class_="form-control",  value=user.mobile)}}
                 </div>
 
                 <h6>Số lượng</h6>
@@ -49,7 +49,12 @@
                   {{render_field(form.order_place, class_="form-control")}}
                 </div>
                 <h5 id="result"></h5>
+                {% if product.available == 0 %}
+                <button type="submit" class="btn btn-secondary mt-4" disabled>Hết hàng</button>
+                {% else %}
                 <button type="submit" class="btn btn-danger mt-4">Xác nhận đặt hàng</button>
+                {% endif %}
+
               </form>
             </div>
           </div>
