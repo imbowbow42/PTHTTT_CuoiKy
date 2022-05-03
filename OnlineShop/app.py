@@ -1,3 +1,4 @@
+from site import USER_SITE
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
 from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators, SelectField
@@ -36,6 +37,14 @@ def is_logged_in(f):
         else:
             return redirect(url_for('login'))
 
+    return wrap
+def is_manager(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if session['admin_role'] == 'manager':
+            next()
+        else:
+            return redirect(url_for('admin'))
     return wrap
 
 # Chưa đăng nhập
@@ -697,6 +706,7 @@ def all_admin():
 
 @app.route('/admin_add_product', methods=['POST', 'GET'])
 @is_admin_logged_in
+@is_manager
 def admin_add_product():
     if request.method == 'POST':
         name = request.form.get('name')
@@ -777,6 +787,7 @@ def admin_add_product():
 
 @app.route('/edit_product', methods=['POST', 'GET'])
 @is_admin_logged_in
+@is_manager
 def edit_product():
     if 'id' in request.args:
         product_id = request.args['id']
@@ -875,6 +886,7 @@ def edit_product():
 
 @app.route('/admin_add_employee', methods=['POST', 'GET'])
 @is_admin_logged_in
+@is_manager
 def admin_add_employee():
     if request.method == 'POST':
         print(request.form)
@@ -904,13 +916,14 @@ def admin_add_employee():
 
 @app.route('/edit_employee', methods=['POST', 'GET'])
 @is_admin_logged_in
+@is_manager
 def edit_employee():
     if 'id' in request.args:
         user_id = request.args['id']
+        print(user_id)
         curso = mysql.connection.cursor()
         res = curso.execute("SELECT * FROM admin WHERE id=%s", (user_id))
         user = curso.fetchall()
-        print(user[0])
         curso.close()
         if res:
             if request.method == 'POST':
@@ -937,6 +950,45 @@ def edit_employee():
                     return render_template('pages/edit_employee.html', user=user[0])
             else:
                 return render_template('pages/edit_employee.html', user=user[0])
+        else:
+            return redirect(url_for('admin_login'))
+    else:
+        return redirect(url_for('admin_login'))
+
+
+@app.route('/edit_user', methods=['POST', 'GET'])
+@is_admin_logged_in
+@is_manager
+def edit_user():
+    if 'id' in request.args:
+        user_id = request.args['id']
+        curso = mysql.connection.cursor()
+        res = curso.execute(f"SELECT * FROM users WHERE id={user_id}")
+        user = curso.fetchall()
+        curso.close()
+        if res:
+            if request.method == 'POST':
+                name = request.form['name']
+                email = request.form['email']
+                password = sha256_crypt.encrypt(str(request.form['password']))
+                phone = request.form['mobile']
+                username = request.form['username']
+                role = request.form['role']
+                # Create Cursor
+                if name and email and password and phone and role and username:
+                    cur = mysql.connection.cursor()
+                    exe = cur.execute(f"UPDATE users SET name='{name}',email='{email}',username='{username}',password='{password}',mobile='{phone}',role='{role}' WHERE id = {user_id}")
+                    mysql.connection.commit()
+    
+                    # Close Connection
+                    cur.close()
+                    flash('Update user success', 'success')
+                    return render_template('pages/edit_user.html', user=user[0])
+                else:
+                    flash('Fill all field', 'danger')
+                    return render_template('pages/edit_user.html', user=user[0])
+            else:
+                return render_template('pages/edit_user.html', user=user[0])
         else:
             return redirect(url_for('admin_login'))
     else:
