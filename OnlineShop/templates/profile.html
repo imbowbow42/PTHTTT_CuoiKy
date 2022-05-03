@@ -37,8 +37,10 @@
                 <thead>
                   <tr>
                     <th>Mã đơn</th>
+                    <th>Người đặt hàng</th>
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
+                    <th>Tổng tiền</th>
                     <th>Địa chỉ</th>
                     <th>Số điện thoại</th>
                     <th>Ngày đặt</th>
@@ -50,7 +52,9 @@
                   <tr>
                     <td>{{order.id}}</td>
                     <td>{{order.ofname}}</td>
+                    <td>{{order.pName}}</td>
                     <td>{{order.quantity}}</td>
+                    <td>{{order.total}}</td>
                     <td>{{order.oplace}}</td>
                     <td>{{order.mobile}}</td>
                     <td>{{order.odate}}</td>
