@@ -42,7 +42,7 @@ def is_manager(f):
     @wraps(f)
     def wrap(*args, **kwargs):
         if session['admin_role'] == 'manager':
-            next()
+            return f(*args, *kwargs)
         else:
             return redirect(url_for('admin'))
     return wrap
@@ -405,7 +405,7 @@ def laptop():
             uid = session['uid']
             curso.execute("SELECT * FROM users WHERE id=%s", (uid,))
             u = curso.fetchall()
-            u = u[0];
+            u = u[0]
         else:
             u ={'name': '', 'mobile': '', 'order_place': ''}
         
@@ -564,7 +564,7 @@ def keyboard():
             uid = session['uid']
             curso.execute("SELECT * FROM users WHERE id=%s", (uid,))
             u = curso.fetchall()
-            u = u[0];
+            u = u[0]
         else:
             u ={'name': '', 'mobile': '', 'order_place': ''}
         return render_template('order_product.html', x=x, tshirts=product, user = u,  form=form)
@@ -1077,7 +1077,95 @@ def edit_user():
             return redirect(url_for('admin_login'))
     else:
         return redirect(url_for('admin_login'))
+@app.route('/delete_user', methods=['POST', 'GET'])
+@is_admin_logged_in
+@is_manager
+def delete_user():
+    if 'id' in request.args:
+        user_id = request.args['id']
+        curso = mysql.connection.cursor()
+        res = curso.execute(f"SELECT * FROM users WHERE id={user_id}")
+        user = curso.fetchall()
+        curso.close()
+        if res:
+            if request.method == 'POST':
+                    cur = mysql.connection.cursor()
+                    exe = cur.execute(f"DELETE FROM users  WHERE id = {user_id}")
+                    mysql.connection.commit()
+    
+                    # Close Connection
+                    cur.close()
+                    if exe:
 
+                        flash('Delete product successfullys', 'success')
+                        return redirect(url_for('admin_login'))
+                    else:
+                        flash('Delete product failed', 'danger')
+                        return redirect(url_for('admin_login'))
+            else:
+                return render_template('pages/delete_user.html', user=user[0])
+    else:
+        return redirect(url_for('admin_login'))
+@app.route('/delete_product', methods=['POST', 'GET'])
+@is_admin_logged_in
+@is_manager
+def delete_product():
+    if 'id' in request.args:
+        user_id = request.args['id']
+        curso = mysql.connection.cursor()
+        res = curso.execute(f"SELECT * FROM products WHERE id={user_id}")
+        user = curso.fetchall()
+        curso.close()
+        if res:
+            if request.method == 'POST':
+                    cur = mysql.connection.cursor()
+                    exe = cur.execute(f"DELETE FROM products  WHERE id = {user_id}")
+
+                    mysql.connection.commit()
+    
+                    # Close Connection
+                    cur.close()
+                    if exe:
+
+                        flash('Delete product successfullys', 'success')
+                        return redirect(url_for('admin_login'))
+                    else:
+                        flash('Delete product failed', 'danger')
+                        return redirect(url_for('admin_login'))
+            else:
+                return render_template('pages/delete_product.html', user=user[0])
+    else:
+        return redirect(url_for('admin_login'))
+@app.route('/delete_admin', methods=['POST', 'GET'])
+@is_admin_logged_in
+@is_manager
+def delete_admin():
+    if 'id' in request.args:
+        user_id = request.args['id']
+        curso = mysql.connection.cursor()
+        res = curso.execute(f"SELECT * FROM admin WHERE id={user_id}")
+        user = curso.fetchall()
+        print(user[0])
+        curso.close()
+        if res:
+            if request.method == 'POST':
+                    cur = mysql.connection.cursor()
+                    exe = cur.execute(f"DELETE FROM admin  WHERE id = {user_id}")
+                    mysql.connection.commit()
+    
+                    # Close Connection
+                    cur.close()
+                    if exe:
+
+                        flash('Delete product successfullys', 'success')
+                        return redirect(url_for('admin_login'))
+                    else:
+                        flash('Delete product failed', 'danger')
+                        return redirect(url_for('admin_login'))
+            else:
+                return render_template('pages/delete_admin.html', user=user[0])
+    else:
+        return redirect(url_for('admin_login'))
 @app.route('/search', methods=['POST', 'GET'])
 def search():
     form = OrderForm(request.form)

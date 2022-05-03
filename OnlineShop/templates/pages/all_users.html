@@ -137,8 +137,8 @@
                                             <th>Role</th>
                                             <th>Management</th>
                                         </tr>
-                                        </thead>
-                                        <tbody>
+                                    </thead>
+                                    <tbody>
                                         {% for user in users_details %}
                                         <tr>
                                             <td>{{user.id}}</td>
@@ -154,7 +154,17 @@
                                                 <a href="/edit_user?id={{user.id}}">
                                                     <div class="">
                                                         <span class="">Edit</span>
-                                                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                                        <span class="pull-right"><i
+                                                                class="fa fa-arrow-circle-right"></i></span>
+
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </a>
+                                                <a class="text-danger" href="/delete_user?id={{user.id}}">
+                                                    <div class="">
+                                                        <span class="">Delete</span>
+                                                        <span class="pull-right"><i
+                                                                class="fa fa-arrow-circle-right"></i></span>
                                                         <div class="clearfix"></div>
                                                     </div>
                                                 </a>
@@ -164,7 +174,7 @@
                                             </td>
                                         </tr>
                                         {% endfor%}
-                                        </tbody>
+                                    </tbody>
                                 </table>
                             </div>
                             {% else %}
@@ -172,6 +182,7 @@
                             {% endif %}
                             <!-- /.table-responsive -->
                         </div>
+                      
                     </div>
                     <!-- /.row -->
                 </div>
@@ -179,6 +190,8 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+
     <!-- /.row -->
 </div>
 {% endblock %}
