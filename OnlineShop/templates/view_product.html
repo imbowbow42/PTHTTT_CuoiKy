@@ -29,13 +29,18 @@
               <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
               4.0
               <h5 class="card-text mt-4" style="color: red">Giá: {{ product.price}}đ</h5>
-
+              {% if product.available == 0 %}
+              <button class="btn btn-secondary mt-4" style="min-width: 200px" disabled>
+                Hết hàng
+              </button>
+              {% else %}
               <a
                 href="/{{product.category}}?order={{product.id}}"
                 class="btn btn-danger mt-4"
                 style="min-width: 200px"
                 >Đặt hàng</a
               >
+              {% endif %}
             </div>
           </div>
         </div>

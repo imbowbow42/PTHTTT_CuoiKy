@@ -1,4 +1,4 @@
-from site import USER_SITE
+from tkinter import E
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
 from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators, SelectField
@@ -323,14 +323,12 @@ def chats():
 
 # Form đặt hàng
 class OrderForm(Form): 
-    name = StringField('', [validators.length(min=1), validators.DataRequired()],
-                       render_kw={'autofocus': True, 'placeholder': 'Họ và tên'})
-    mobile_num = StringField('', [validators.length(min=1), validators.DataRequired()],
-                             render_kw={'autofocus': True, 'placeholder': 'Số điện thoại'})
-    quantity = SelectField('', [validators.DataRequired()],
-                           choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')])
-    order_place = StringField('', [validators.length(min=1), validators.DataRequired()],
-                              render_kw={'placeholder': 'Địa chỉ'})
+    name = StringField('', [validators.length(min=1), validators.DataRequired()], render_kw={'autofocus': True, 'placeholder': 'Họ và tên'})
+    mobile_num = StringField('', [validators.length(min=1), validators.DataRequired()],render_kw={'autofocus': True, 'placeholder': 'Số điện thoại'})
+    quantity = SelectField('', [validators.DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')])
+    order_place = StringField('', [validators.length(min=1), validators.DataRequired()], render_kw={'placeholder': 'Địa chỉ'})
+    total = StringField('', [], render_kw={})
+
 
 
 # Danh sách Laptop
@@ -356,24 +354,39 @@ def laptop():
         week = datetime.timedelta(days=7)
         delivery_date = now + week
         now_time = delivery_date.strftime("%y-%m-%d %H:%M:%S")
+        total = form.total.data
+       
         # Create Cursor
         curs = mysql.connection.cursor()
+        curs.execute("SELECT pName FROM products WHERE id=%s ", (pid,))
+        pName = curs.fetchall()
+        pName = pName[0]['pName']
+
         if 'uid' in session:
             uid = session['uid']
-            curs.execute("INSERT INTO orders(uid, pid, ofname, mobile, oplace, quantity, ddate) "
-                         "VALUES(%s, %s, %s, %s, %s, %s, %s)",
-                         (uid, pid, name, mobile, order_place, quantity, now_time))
+            curs.execute("INSERT INTO orders(uid, pid, ofname, pName, mobile, oplace, quantity, total, ddate) "
+                         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                         (uid, pid, name,pName, mobile, order_place, quantity, total, now_time))
         else:
-            curs.execute("INSERT INTO orders(pid, ofname, mobile, oplace, quantity, ddate) "
-                         "VALUES(%s, %s, %s, %s, %s, %s)",
-                         (pid, name, mobile, order_place, quantity, now_time))
+            curs.execute("INSERT INTO orders(pid, ofname,pName, mobile, oplace, quantity, total, ddate) "
+                         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",
+                         (pid, name,pName, mobile, order_place, quantity, total, now_time))
+        
+
+        curs.execute("SELECT available FROM products WHERE id=%s ", (pid,))
+        quantity_old = curs.fetchall()
+        quantity_old = quantity_old[0]['available']
+        quantity_new = int(quantity_old) - int(quantity)
+        # Update so luong sau khi dat hang
+        curs.execute("UPDATE products SET available = %s WHERE id = %s", (quantity_new, pid))
         # Commit cursor
         mysql.connection.commit()
         # Close Connection
-        cur.close()
+        curs.close()
+       
 
         flash('Order successful', 'success')
-        return render_template('laptop.html', laptop=products, form=form)
+        return render_template('laptop.html', laptop=products,form=form)
     if 'view' in request.args:
         q = request.args['view']
         product_id = q
@@ -388,7 +401,15 @@ def laptop():
         curso.execute("SELECT * FROM products WHERE id=%s", (product_id,))
         product = curso.fetchall()
         x = content_based_filtering(product_id)
-        return render_template('order_product.html', x=x, tshirts=product, form=form)
+        if 'uid' in session:
+            uid = session['uid']
+            curso.execute("SELECT * FROM users WHERE id=%s", (uid,))
+            u = curso.fetchall()
+            u = u[0];
+        else:
+            u ={'name': '', 'mobile': '', 'order_place': ''}
+        
+        return render_template('order_product.html', x=x, tshirts=product, user = u,  form=form)
     return render_template('laptop.html', laptop=products, form=form)
 
 # Danh sách Chuột
@@ -414,21 +435,35 @@ def mouse():
         week = datetime.timedelta(days=7)
         delivery_date = now + week
         now_time = delivery_date.strftime("%y-%m-%d %H:%M:%S")
+        total = form.total.data
+       
         # Create Cursor
         curs = mysql.connection.cursor()
+        curs.execute("SELECT pName FROM products WHERE id=%s ", (pid,))
+        pName = curs.fetchall()
+        pName = pName[0]['pName']
+
         if 'uid' in session:
             uid = session['uid']
-            curs.execute("INSERT INTO orders(uid, pid, ofname, mobile, oplace, quantity, ddate) "
-                         "VALUES(%s, %s, %s, %s, %s, %s, %s)",
-                         (uid, pid, name, mobile, order_place, quantity, now_time))
+            curs.execute("INSERT INTO orders(uid, pid, ofname, pName, mobile, oplace, quantity, total, ddate) "
+                         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                         (uid, pid, name,pName, mobile, order_place, quantity, total, now_time))
         else:
-            curs.execute("INSERT INTO orders(pid, ofname, mobile, oplace, quantity, ddate) "
-                         "VALUES(%s, %s, %s, %s, %s, %s)",
-                         (pid, name, mobile, order_place, quantity, now_time))
+            curs.execute("INSERT INTO orders(pid, ofname,pName, mobile, oplace, quantity, total, ddate) "
+                         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",
+                         (pid, name,pName, mobile, order_place, quantity, total, now_time))
+        
+
+        curs.execute("SELECT available FROM products WHERE id=%s ", (pid,))
+        quantity_old = curs.fetchall()
+        quantity_old = quantity_old[0]['available']
+        quantity_new = int(quantity_old) - int(quantity)
+        # Update so luong sau khi dat hang
+        curs.execute("UPDATE products SET available = %s WHERE id = %s", (quantity_new, pid))
         # Commit cursor
         mysql.connection.commit()
         # Close Connection
-        cur.close()
+        curs.close()
 
         flash('Order successful', 'success')
         return render_template('mouse.html', mouse=products, form=form)
@@ -446,7 +481,14 @@ def mouse():
         curso.execute("SELECT * FROM products WHERE id=%s", (product_id,))
         product = curso.fetchall()
         x = content_based_filtering(product_id)
-        return render_template('order_product.html', x=x, tshirts=product, form=form)
+        if 'uid' in session:
+            uid = session['uid']
+            curso.execute("SELECT * FROM users WHERE id=%s", (uid,))
+            u = curso.fetchall()
+            u = u[0];
+        else:
+            u ={'name': '', 'mobile': '', 'order_place': ''}
+        return render_template('order_product.html', x=x, tshirts=product, user = u,  form=form)
     return render_template('mouse.html', mouse=products, form=form)
 
 # Danh sách bàn phím
@@ -472,21 +514,35 @@ def keyboard():
         week = datetime.timedelta(days=7)
         delivery_date = now + week
         now_time = delivery_date.strftime("%y-%m-%d %H:%M:%S")
+        total = form.total.data
+       
         # Create Cursor
         curs = mysql.connection.cursor()
+        curs.execute("SELECT pName FROM products WHERE id=%s ", (pid,))
+        pName = curs.fetchall()
+        pName = pName[0]['pName']
+
         if 'uid' in session:
             uid = session['uid']
-            curs.execute("INSERT INTO orders(uid, pid, ofname, mobile, oplace, quantity, ddate) "
-                         "VALUES(%s, %s, %s, %s, %s, %s, %s)",
-                         (uid, pid, name, mobile, order_place, quantity, now_time))
+            curs.execute("INSERT INTO orders(uid, pid, ofname, pName, mobile, oplace, quantity, total, ddate) "
+                         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                         (uid, pid, name,pName, mobile, order_place, quantity, total, now_time))
         else:
-            curs.execute("INSERT INTO orders(pid, ofname, mobile, oplace, quantity, ddate) "
-                         "VALUES(%s, %s, %s, %s, %s, %s)",
-                         (pid, name, mobile, order_place, quantity, now_time))
+            curs.execute("INSERT INTO orders(pid, ofname,pName, mobile, oplace, quantity, total, ddate) "
+                         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",
+                         (pid, name,pName, mobile, order_place, quantity, total, now_time))
+        
+
+        curs.execute("SELECT available FROM products WHERE id=%s ", (pid,))
+        quantity_old = curs.fetchall()
+        quantity_old = quantity_old[0]['available']
+        quantity_new = int(quantity_old) - int(quantity)
+        # Update so luong sau khi dat hang
+        curs.execute("UPDATE products SET available = %s WHERE id = %s", (quantity_new, pid))
         # Commit cursor
         mysql.connection.commit()
         # Close Connection
-        cur.close()
+        curs.close()
 
         flash('Order successful', 'success')
         return render_template('keyboard.html', keyboard=products, form=form)
@@ -504,7 +560,14 @@ def keyboard():
         curso.execute("SELECT * FROM products WHERE id=%s", (product_id,))
         product = curso.fetchall()
         x = content_based_filtering(product_id)
-        return render_template('order_product.html', x=x, tshirts=product, form=form)
+        if 'uid' in session:
+            uid = session['uid']
+            curso.execute("SELECT * FROM users WHERE id=%s", (uid,))
+            u = curso.fetchall()
+            u = u[0];
+        else:
+            u ={'name': '', 'mobile': '', 'order_place': ''}
+        return render_template('order_product.html', x=x, tshirts=product, user = u,  form=form)
     return render_template('keyboard.html', keyboard=products, form=form)
 
 # Danh sách màn hinh
@@ -530,21 +593,35 @@ def screen():
         week = datetime.timedelta(days=7)
         delivery_date = now + week
         now_time = delivery_date.strftime("%y-%m-%d %H:%M:%S")
+        total = form.total.data
+       
         # Create Cursor
         curs = mysql.connection.cursor()
+        curs.execute("SELECT pName FROM products WHERE id=%s ", (pid,))
+        pName = curs.fetchall()
+        pName = pName[0]['pName']
+
         if 'uid' in session:
             uid = session['uid']
-            curs.execute("INSERT INTO orders(uid, pid, ofname, mobile, oplace, quantity, ddate) "
-                         "VALUES(%s, %s, %s, %s, %s, %s, %s)",
-                         (uid, pid, name, mobile, order_place, quantity, now_time))
+            curs.execute("INSERT INTO orders(uid, pid, ofname, pName, mobile, oplace, quantity, total, ddate) "
+                         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                         (uid, pid, name,pName, mobile, order_place, quantity, total, now_time))
         else:
-            curs.execute("INSERT INTO orders(pid, ofname, mobile, oplace, quantity, ddate) "
-                         "VALUES(%s, %s, %s, %s, %s, %s)",
-                         (pid, name, mobile, order_place, quantity, now_time))
+            curs.execute("INSERT INTO orders(pid, ofname,pName, mobile, oplace, quantity, total, ddate) "
+                         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",
+                         (pid, name,pName, mobile, order_place, quantity, total, now_time))
+        
+
+        curs.execute("SELECT available FROM products WHERE id=%s ", (pid,))
+        quantity_old = curs.fetchall()
+        quantity_old = quantity_old[0]['available']
+        quantity_new = int(quantity_old) - int(quantity)
+        # Update so luong sau khi dat hang
+        curs.execute("UPDATE products SET available = %s WHERE id = %s", (quantity_new, pid))
         # Commit cursor
         mysql.connection.commit()
         # Close Connection
-        cur.close()
+        curs.close()
 
         flash('Order successful', 'success')
         return render_template('screen.html', screen=products, form=form)
@@ -562,7 +639,14 @@ def screen():
         curso.execute("SELECT * FROM products WHERE id=%s", (product_id,))
         product = curso.fetchall()
         x = content_based_filtering(product_id)
-        return render_template('order_product.html', x=x, tshirts=product, form=form)
+        if 'uid' in session:
+            uid = session['uid']
+            curso.execute("SELECT * FROM users WHERE id=%s", (uid,))
+            u = curso.fetchall()
+            u = u[0];
+        else:
+            u ={'name': '', 'mobile': '', 'order_place': ''}
+        return render_template('order_product.html', x=x, tshirts=product, user = u,  form=form)
     return render_template('screen.html', screen=products, form=form)
 
 

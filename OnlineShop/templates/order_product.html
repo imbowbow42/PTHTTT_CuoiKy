@@ -21,7 +21,10 @@
               <p class="card-text">Số lượng: {{ product.available}}</p>
               <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
               4.0
-              <h5 class="card-text mt-4" style="color: red"  id="price-product">Giá: {{ product.price}}đ</h5>
+             
+             <h5 class="card-text mt-4" style="color: red">
+               Giá: <span style="color: red"  id="price-product" >{{ product.price}}</span>đ
+            </h5> 
 
             
             </div>
@@ -34,22 +37,32 @@
               {% from "includes/_formhelpers.html" import render_field %}
               <form method="POST" action="/{{product.category}}?order={{product.id}}">
                 <h6>Họ và tên</h6>
-                <div class="form-group">{{render_field(form.name, class_="form-control", value=session.s_name)}}</div>
+                <div class="form-group">{{render_field(form.name, class_="form-control", value=user.name)}}</div>
                
                 <h6>Số điện thoại</h6>
                 <div class="form-group">
-                  {{render_field(form.mobile_num, class_="form-control")}}
+                  {{render_field(form.mobile_num, class_="form-control",  value=user.mobile)}}
                 </div>
 
                 <h6>Số lượng</h6>
-                <div class="form-group" id="number">{{render_field(form.quantity, class_="form-control")}}</div>
+                <div class="form-group" >{{render_field(form.quantity, class_="form-control")}}</div>
 
                 <h6>Địa chỉ</h6>
                 <div class="form-group">
                   {{render_field(form.order_place, class_="form-control")}}
                 </div>
-                <h5 id="result"></h5>
+
+                <h4 class="mt-4"  style="color: red" >Total: </h4> 
+                <div class="form-group" >
+                  {{render_field(form.total, class_="form-control")}}
+                </div>
+                
+                {% if product.available == 0 %}
+                <button type="submit" class="btn btn-secondary mt-4" disabled>Hết hàng</button>
+                {% else %}
                 <button type="submit" class="btn btn-danger mt-4">Xác nhận đặt hàng</button>
+                {% endif %}
+
               </form>
             </div>
           </div>
@@ -81,7 +94,9 @@
                   >{{ product.pName}}</a
                 >
               </h5>
-              <h4 style="color: red">{{product.price}}đ</h4>
+              <div>
+                <h4 style="color: red" >{{product.price}}</h4><h4 style="color: red">đ</h4>
+              </div>
             </div>
           </div>
         </div>
@@ -91,5 +106,27 @@
     </div>
   </div>
 </div>
+
+<script>
+  let q = document.getElementById('quantity')
+  let price_product = document.getElementById('price-product').innerHTML
+  let show_total = document.getElementById('total')
+  let total  = price_product
+  show_total.readOnly = true
+  show_total.innerHTML = total 
+  show_total.setAttribute('value', total)
+ 
+
+  q.onchange = function(){
+    number = q.options[q.selectedIndex].text;
+
+    total = Number(price_product) * Number(number)
+
+    show_total.innerHTML = total
+    show_total.setAttribute('value', total)
+    
+
+  }
+</script>
 {% endblock %}
 

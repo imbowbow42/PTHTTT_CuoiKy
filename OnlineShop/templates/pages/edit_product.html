@@ -63,274 +63,287 @@
                                 </div>
                                 {% for product_level in product_level %}
                                 <div class="form-group level-container">
-                                    
+                                    {% if product.category == 'laptop' %}
                                     <label>Danh mục Laptop</label>
                                     <div class="form-group">
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="laptop" value="new_product">New
+                                            {% if product_level.new_product == 'yes' %}
+                                            <input type="checkbox" name="laptop" value="new_product" checked>New
+                                            {% else%}
+                                            <input type="checkbox" name="laptop" value="new_product" >New
+                                            {% endif %}
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label >Hãng: </label>
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="laptop" value="dell">Dell
+                                            {% if product_level.dell == 'yes' %} 
+                                            <input type="checkbox" name="laptop" value="dell" checked>Dell
+                                            {% else %} 
+                                            <input type="checkbox" name="laptop" value="dell" >Dell
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.dell == 'yes' %} 
+                                            <input type="checkbox" name="laptop" value="asus" checked>Asus
+                                            {% else %} 
                                             <input type="checkbox" name="laptop" value="asus">Asus
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.acer == 'yes' %} 
+                                            <input type="checkbox" name="laptop" value="acer" checked>Acer
+                                            {% else %} 
                                             <input type="checkbox" name="laptop" value="acer">Acer
+                                            {% endif %}
+                                            
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.lenovo == 'yes' %} 
+                                            <input type="checkbox" name="laptop" value="lenovo" checked>Lenovo
+                                            {% else %}
                                             <input type="checkbox" name="laptop" value="lenovo">Lenovo
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.apple == 'yes' %} 
+                                            <input type="checkbox" name="laptop" value="apple" checked>Apple
+                                            {% else %} 
                                             <input type="checkbox" name="laptop" value="apple">Apple
+                                            {% endif %}
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label >Loại: </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.gaming == 'yes' %} 
+                                            <input type="checkbox" name="laptop" value="gaming" checked>Gaming
+                                            {% else %} 
                                             <input type="checkbox" name="laptop" value="gaming">Gaming
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.office == 'yes' %} 
+                                            <input type="checkbox" name="laptop" value="office" checked>Văn phòng
+                                            {% else %} 
                                             <input type="checkbox" name="laptop" value="office">Văn phòng
+                                            {% endif %}
                                         </label>
-                                     
                                     </div>
+                                    {% endif %}
 
+                                    {% if product.category == 'mouse' %}
                                     <label>Danh mục Chuột</label>
                                     <div class="form-group">
                                         <label class="checkbox-inline">
+                                            {% if product_level.new_product == 'yes' %} 
+                                            <input type="checkbox" name="mouse" value="new_product" checked>New
+                                            {% else %} 
                                             <input type="checkbox" name="mouse" value="new_product">New
+                                            {% endif %}
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label >Hãng: </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.dell == 'yes' %} 
+                                            <input type="checkbox" name="mouse" value="dell" checked>Dell
+                                            {% else %} 
                                             <input type="checkbox" name="mouse" value="dell">Dell
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.asus == 'yes' %} 
+                                            <input type="checkbox" name="mouse" value="asus" checked>Asus
+                                            {% else %} 
                                             <input type="checkbox" name="mouse" value="asus">Asus
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.acer == 'yes' %} 
+                                            <input type="checkbox" name="mouse" value="acer" checked>Acer
+                                            {% else %} 
                                             <input type="checkbox" name="mouse" value="acer">Acer
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="mouse" value="lenovo">Lenovo
+                                            {% if product_level.lenovo == 'yes' %} 
+                                            <input type="checkbox" name="mouse" value="lenovo" checked>Lenovo
+                                            {% else %} 
+                                            <input type="checkbox" name="mouse" value="lenovo" >Lenovo
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.apple == 'yes' %} 
+                                            <input type="checkbox" name="mouse" value="apple" checked>Apple
+                                            {% else %} 
                                             <input type="checkbox" name="mouse" value="apple">Apple
+                                            {% endif %}
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label >Loại: </label>
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="mouse" value="bluetooth">Bluetooth
+                                            {% if product_level.bluetooth == 'yes' %} 
+                                            <input type="checkbox" name="mouse" value="bluetooth" checked>Bluetooth
+                                            {% else %} 
+                                            <input type="checkbox" name="mouse" value="bluetooth" >Bluetooth
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.cable == 'yes' %} 
+                                            <input type="checkbox" name="mouse" value="cable" checked>Có dây
+                                            {% else %} 
                                             <input type="checkbox" name="mouse" value="cable">Có dây
+                                            {% endif %}
                                         </label>
                                     </div>
+                                    {% endif %}
                                    
+                                    {% if product.category == 'keyboard' %}
                                     <label>Danh mục Bàn phím</label>
                                     <div class="form-group">
                                         <label class="checkbox-inline">
+                                            {% if product_level.new_product == 'yes' %} 
+                                            <input type="checkbox" name="keyboard" value="new_product" checked>New
+                                            {% else %} 
                                             <input type="checkbox" name="keyboard" value="new_product">New
+                                            {% endif %}
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label >Hãng: </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.logitech == 'yes' %} 
+                                            <input type="checkbox" name="keyboard" value="logitech" checked>Logitech
+                                            {% else %} 
                                             <input type="checkbox" name="keyboard" value="logitech">Logitech
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.edra == 'yes' %} 
+                                            <input type="checkbox" name="keyboard" value="edra" checked>Edra
+                                            {% else %} 
                                             <input type="checkbox" name="keyboard" value="edra">Edra
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.razer == 'yes' %} 
+                                            <input type="checkbox" name="keyboard" value="razer" checked>Razer
+                                            {% else %} 
                                             <input type="checkbox" name="keyboard" value="razer">Razer
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" name="keyboard" value="dell">Dell
+                                            {% if product_level.dell == 'yes' %} 
+                                            <input type="checkbox" name="keyboard" value="dell" checked>Dell
+                                            {% else %} 
+                                            <input type="checkbox" name="keyboard" value="dell" >Dell
+                                            {% endif %}
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label >Loại: </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.bluetooth == 'yes' %} 
+                                            <input type="checkbox" name="keyboard" value="bluetooth" checked>Bluetooth
+                                            {% else %}
                                             <input type="checkbox" name="keyboard" value="bluetooth">Bluetooth
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.cable == 'yes' %} 
+                                            <input type="checkbox" name="keyboard" value="cable" checked>Có dây
+                                            {% else %} 
                                             <input type="checkbox" name="keyboard" value="cable">Có dây
+                                            {% endif %}
                                         </label>
                                     </div>
+                                    {% endif %}
 
+                                    {% if product.category == 'screen' %}
                                     <label>Danh mục Màn hình</label>
                                     <div class="form-group">
                                         <label class="checkbox-inline">
+                                            {% if product_level.new_product == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="new_product" checked>New
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="new_product">New
+                                            {% endif %}
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label >Hãng: </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.dell == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="dell" checked>Dell
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="dell">Dell
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.asus == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="asus" checked>Asus
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="asus">Asus
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.acer == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="acer" checked>Acer
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="acer">Acer
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.lenovo == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="lenovo" checked>Lenovo
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="lenovo">Lenovo
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.apple == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="apple" checked>Apple
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="apple">Apple
+                                            {% endif %}
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label >Loại: </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.screen_22 == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="screen_22" checked>22 inch
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="screen_22">22 inch
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.screen_24 == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="screen_24" checked>24 inch
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="screen_24">24 inch
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.screen_2k == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="screen_2k" checked>2k
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="screen_2k">2k
+                                            {% endif %}
                                         </label>
                                         <label class="checkbox-inline">
+                                            {% if product_level.screen_4k == 'yes' %} 
+                                            <input type="checkbox" name="screen" value="screen_4k" checked>4k
+                                            {% else %} 
                                             <input type="checkbox" name="screen" value="screen_4k">4k
+                                            {% endif %}
                                         </label>
                                     </div>
                                 </div>
-                                <div class="form-group level-container">
-                                    {% if product.category == 'tshirt' %}
-                                    <label>level for T-shirt</label>
-                                    <div class="form-group">
-                                        <label class="checkbox-inline active">
-                                            {% if product_level.v_shape == 'yes' %}
-                                            <input type="checkbox" checked name="tshirt" value="v_shape">V-Shape
-                                            {% else%}
-                                            <input type="checkbox" name="tshirt" value="v_shape">V-Shape
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.polo == 'yes' %}
-                                            <input type="checkbox" checked name="tshirt" value="polo">Polo T-shirt
-                                            {% else%}
-                                            <input type="checkbox" name="tshirt" value="polo">Polo T-shirt
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.clean_text == 'yes' %}
-                                            <input type="checkbox" checked name="tshirt" value="clean_text">Clean Text
-                                            {% else%}
-                                            <input type="checkbox" name="tshirt" value="clean_text">Clean Text
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.design == 'yes' %}
-                                            <input type="checkbox" checked name="tshirt" value="design">Colorful Design
-                                            {% else%}
-                                            <input type="checkbox" name="tshirt" value="design">Colorful Design
-                                            {% endif %}
-                                        </label>
-                                    </div>
-                                    {% endif %}
-                                    {% if product.category == 'wallet' %}
-                                    <label>Level for Wallet</label>
-                                    <div class="form-group">
-                                        <label class="checkbox-inline">
-                                            {% if product_level.chain == 'yes' %}
-                                            <input type="checkbox" checked name="wallet" value="chain">Chain
-                                            {% else%}
-                                            <input type="checkbox" name="wallet" value="chain">Chain
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.leather == 'yes' %}
-                                            <input type="checkbox" checked name="wallet" value="leather">Leather
-                                            {% else%}
-                                            <input type="checkbox" name="wallet" value="leather">Leather
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.design == 'yes' %}
-                                            <input type="checkbox" checked name="wallet" value="design">Design
-                                            {% else%}
-                                            <input type="checkbox" name="wallet" value="design">Design
-                                            {% endif %}
-                                        </label>
-                                    </div>
-                                    {% endif %}
-                                    {% if product.category == 'belt' %}
-                                    <label>Level for Belt</label>
-                                    <div class="form-group">
-                                        <label class="checkbox-inline">
-                                            {% if product_level.leather == 'yes' %}
-                                            <input type="checkbox" checked name="belt" value="leather">Leather
-                                            {% else%}
-                                            <input type="checkbox" name="belt" value="leather">Leather
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.hook == 'yes' %}
-                                            <input type="checkbox" checked name="belt" value="hook">Hook
-                                            {% else%}
-                                            <input type="checkbox" name="belt" value="hook">Hook
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.color == 'yes' %}
-                                            <input type="checkbox" checked name="belt" value="color">Color
-                                            {% else%}
-                                            <input type="checkbox" name="belt" value="color">Color
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.design == 'yes' %}
-                                            <input type="checkbox" checked name="belt" value="design">Design
-                                            {% else%}
-                                            <input type="checkbox" name="belt" value="design">Design
-                                            {% endif %}
-                                        </label>
-                                    </div>
-                                    {% endif %}
-                                    {% if product.category == 'shoes' %}
-                                    <label>Level for Shoes</label>
-                                    <div class="form-group">
-                                        <label class="checkbox-inline">
-                                            {% if product_level.formal == 'yes' %}
-                                            <input type="checkbox" checked name="shoes" value="formal">Formal
-                                            {% else%}
-                                            <input type="checkbox" name="shoes" value="formal">Formal
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.converse == 'yes' %}
-                                            <input type="checkbox" checked name="shoes" value="converse">Converse
-                                            {% else%}
-                                            <input type="checkbox" name="shoes" value="converse">Converse
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.loafer == 'yes' %}
-                                            <input type="checkbox" checked name="shoes" value="loafer">Loafer
-                                            {% else%}
-                                            <input type="checkbox" name="shoes" value="loafer">Loafer
-                                            {% endif %}
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            {% if product_level.leather == 'yes' %}
-                                            <input type="checkbox" name="shoes" checked value="leather">Leather
-                                            {% else%}
-                                            <input type="checkbox" name="shoes" value="leather">Leather
-                                            {% endif %}
-                                        </label>
-                                    </div>
-                                    {% endif %}
-                                </div>
+                                {% endif %}
+                               
                                 {% endfor %}
                                 <div class="form-group">
                                     <label>Item</label>
