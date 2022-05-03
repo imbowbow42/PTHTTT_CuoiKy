@@ -104,12 +104,12 @@
         <div class="col-lg-12">
             <div class="panel panel-default my-4">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i>All Orders
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Users List
                     <i class="sidebar-search">
                         <form action="" method="post">
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" name="search"
-                                    placeholder="Search by @orders id or @phone number...">
+                                    placeholder="Search users by @username or phone numbers...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit">
                                         <i class="fa fa-search"></i>
@@ -117,48 +117,57 @@
                                 </span>
                             </div>
                         </form>
-                        <!-- /input-group -->
-                    </i>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            {% if result %}
+                            {% if admin_details %}
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover table-striped">
                                     <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>User Id</th>
-                                        <th>Name</th>
-                                        <th>Product Id</th>
-                                        <th>Quantity</th>
-                                        <th>Order Place</th>
-                                        <th>Mobile</th>
-                                        <th>Order Date</th>
-                                        <th>Delivery Date</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Username</th>
+                                            <th>Mobile</th>
+                                            <th>Registration Time</th>
+                                            <th>Type</th>
+                                            <th>Management</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    {% for product in result %}
-                                    <tr>
-                                        <td>{{product.id}}</td>
-                                        <td>{{product.uid}}</td>
-                                        <td>{{product.ofname}}</td>
-                                        <td>{{product.pid}}</td>
-                                        <td>{{product.quantity}}</td>
-                                        <td>{{product.oplace}}</td>
-                                        <td>{{product.mobile}}</td>
-                                        <td>{{product.odate}}</td>
-                                        <td>{{product.ddate}}</td>
-                                    </tr>
-                                    {% endfor%}
+                                        {% for admin in admin_details %}
+                                        <tr>
+                                            <td>{{admin.id}}</td>
+                                            <td>{{admin.fullName}}</td>
+                                            <td>{{admin.email}}</td>
+                                            <td>Empty</td>
+                                            <td>{{admin.mobile}}</td>
+                                            <td>Empty</td>
+                                            <td>{{admin.type}}</td>
+                                            <td>
+                                                {% if session['admin_role'] == 'manager' %}
+                                                <a href="/edit_employee?id={{admin.id}}">
+                                                    <div class="">
+                                                        <span class="">Edit</span>
+                                                        <span class="pull-right"><i
+                                                                class="fa fa-arrow-circle-right"></i></span>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </a>
+                                                {% else %}
+                                                <p class="text-secondary">Not have permission</p>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor%}
                                     </tbody>
                                 </table>
                             </div>
                             {% else %}
-                            <h3>No orders found</h3>
+                            <h3>No user found</h3>
                             {% endif %}
                             <!-- /.table-responsive -->
                         </div>

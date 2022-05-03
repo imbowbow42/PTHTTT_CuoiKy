@@ -648,41 +648,90 @@ def admin_logout():
     return redirect(url_for('admin'))
 
 
-@app.route('/admin')
+@app.route('/admin', methods=['GET', 'POST'])
 @is_admin_logged_in
 def admin():
-
     curso = mysql.connection.cursor()
-    num_rows = curso.execute("SELECT * FROM products")
-    result = curso.fetchall()
-    order_rows = curso.execute("SELECT * FROM orders")
-    users_rows = curso.execute("SELECT * FROM users")
-    return render_template('pages/index_admin.html', result=result, row=num_rows, order_rows=order_rows,
-                           users_rows=users_rows)
+    if request.method == 'POST':
+        query = request.form['search']
+        standardlize ="%"+request.form['search']+"%"
+        num_rows = curso.execute("SELECT * FROM products where products.pName LIKE %s or products.pCode LIKE %s", (standardlize,standardlize))
+        result = curso.fetchall()
+        flash('Search results for: {}'.format(query),'success')
+        return render_template('pages/index_admin.html', result=result, row=num_rows)
+
+    else:    
+        num_rows = curso.execute("SELECT * FROM products")
+        result = curso.fetchall()
+        order_rows = curso.execute("SELECT * FROM orders")
+        users_rows = curso.execute("SELECT * FROM users")
+        admin_rows = curso.execute("SELECT * FROM admin")
+        return render_template('pages/index_admin.html', result=result, row=num_rows, order_rows=order_rows,
+                    users_rows=users_rows, admin_rows= admin_rows)
 
 
-@app.route('/orders')
+@app.route('/orders', methods=['GET', 'POST'])
 @is_admin_logged_in
 def orders():
     curso = mysql.connection.cursor()
-    num_rows = curso.execute("SELECT * FROM products")
-    order_rows = curso.execute("SELECT * FROM orders")
-    result = curso.fetchall()
-    users_rows = curso.execute("SELECT * FROM users")
-    return render_template('pages/all_orders.html', result=result, row=num_rows, order_rows=order_rows,
-                           users_rows=users_rows)
+    if request.method == 'POST':
+        query = request.form['search']
+        standardlize ="%"+request.form['search']+"%"
+        num_rows = curso.execute("SELECT * FROM orders where id = %s or mobile LIKE %s", (query,standardlize))
+        result = curso.fetchall()
+        flash('Search results for: {}'.format(query),'success')
+        return render_template('pages/all_orders.html', result=result, row=num_rows)
+
+    else:    
+        num_rows = curso.execute("SELECT * FROM products")
+        order_rows = curso.execute("SELECT * FROM orders")
+        result = curso.fetchall()
+        users_rows = curso.execute("SELECT * FROM users")
+        admin_rows = curso.execute("SELECT * FROM admin")
+        return render_template('pages/all_orders.html', result=result, row=num_rows, order_rows=order_rows,
+                           users_rows=users_rows, admin_rows= admin_rows)
 
 
-@app.route('/users')
+@app.route('/users', methods=['GET', 'POST'])
 @is_admin_logged_in
 def users():
     curso = mysql.connection.cursor()
-    num_rows = curso.execute("SELECT * FROM products")
-    order_rows = curso.execute("SELECT * FROM orders")
-    users_rows = curso.execute("SELECT * FROM users")
-    result = curso.fetchall()
-    return render_template('pages/all_users.html', result=result, row=num_rows, order_rows=order_rows,
-                           users_rows=users_rows)
+    if request.method == 'POST':
+        query = request.form['search']
+        standardlize ="%"+request.form['search']+"%"
+        users_rows = curso.execute("SELECT * FROM users where username LIKE %s or mobile LIKE  %s",(standardlize,standardlize))
+        result = curso.fetchall()
+        flash('Search results for: {}'.format(query),'success')
+        return render_template('pages/all_users.html', result=result, users_rows=users_rows)
+    else:                       
+        num_rows = curso.execute("SELECT * FROM products")
+        order_rows = curso.execute("SELECT * FROM orders")
+        users_rows = curso.execute("SELECT * FROM users")
+        users_details = curso.fetchall()
+        admin_rows = curso.execute("SELECT * FROM admin")
+        
+        return render_template('pages/all_users.html', users_details=users_details, row=num_rows, order_rows=order_rows,
+                            users_rows=users_rows, admin_rows=admin_rows )
+@app.route('/all_admin', methods=['GET', 'POST'])
+@is_admin_logged_in
+def all_admin():
+    curso = mysql.connection.cursor()
+    if request.method == 'POST':
+        query = request.form['search']
+        standardlize ="%"+request.form['search']+"%"
+        users_rows = curso.execute("SELECT * FROM admin where email LIKE %s or mobile LIKE  %s",(standardlize,standardlize))
+        result = curso.fetchall()
+        flash('Search results for: {}'.format(query),'success')
+        return render_template('pages/all_admin.html', result=result, users_rows=users_rows)
+    else:                       
+        num_rows = curso.execute("SELECT * FROM products")
+        order_rows = curso.execute("SELECT * FROM orders")
+        users_rows = curso.execute("SELECT * FROM users")
+        admin_rows = curso.execute("SELECT * FROM admin")
+        admin_details = curso.fetchall()
+        
+        return render_template('pages/all_admin.html',  row=num_rows, order_rows=order_rows,
+                            users_rows=users_rows , admin_details = admin_details, admin_rows = admin_rows)
 
 
 @app.route('/admin_add_product', methods=['POST', 'GET'])
@@ -891,6 +940,46 @@ def admin_add_employee():
             
     else:
         return render_template('pages/add_employee.html')
+
+@app.route('/edit_employee', methods=['POST', 'GET'])
+@is_admin_logged_in
+def edit_employee():
+    if 'id' in request.args:
+        user_id = request.args['id']
+        curso = mysql.connection.cursor()
+        res = curso.execute("SELECT * FROM admin WHERE id=%s", (user_id))
+        user = curso.fetchall()
+        print(user[0])
+        curso.close()
+        if res:
+            if request.method == 'POST':
+                fullName = request.form['fullName']
+                email = request.form['email']
+                address = request.form['address']
+                password = sha256_crypt.encrypt(str(request.form['password']))
+                phone = request.form['phone']
+                type = request.form['type']
+                # Create Cursor
+                if fullName and email and address and password and phone and type:
+                    cur = mysql.connection.cursor()
+                    exe = cur.execute(
+                        "UPDATE admin SET fullName=%s,email=%s,mobile=%s,address=%s,password=%s,type=%s where id = %s",
+                        (fullName, email, phone, address, password, type,user_id) )
+                    mysql.connection.commit()
+    
+                    # Close Connection
+                    cur.close()
+                    flash('Update user success', 'success')
+                    return render_template('pages/edit_employee.html', user=user[0])
+                else:
+                    flash('Fill all field', 'danger')
+                    return render_template('pages/edit_employee.html', user=user[0])
+            else:
+                return render_template('pages/edit_employee.html', user=user[0])
+        else:
+            return redirect(url_for('admin_login'))
+    else:
+        return redirect(url_for('admin_login'))
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
